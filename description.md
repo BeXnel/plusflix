@@ -17,6 +17,11 @@ custom-php-framework
 |--data.db
 ```
 
+## Uruchomienie projektu
+```
+php -S localhost:55555 -t .\public\
+```
+
 Poszczególne katalogi zostaną opisane poniżej.
 
 ## `config`
@@ -26,7 +31,7 @@ Plik ten początkowo nie istnieje i należy go skopiować z pliku `config.dist.p
 
 ## `public`
 
-To tzw. webroot aplikacji. Tutaj znajduje się plik index.php, który jest punktem wejścia do aplikacji. Cały ruch na stronie przechodzi przez ten plik. Jest to tzw. "front controller". 
+To tzw. webroot aplikacji. Tutaj znajduje się plik index.php, który jest punktem wejścia do aplikacji. Cały ruch na stronie przechodzi przez ten plik. Jest to tzw. "front controller".
 W katalogu `public` znajdują się również pliki statyczne wykorzystywane przez przeglądarkę do zarządzania wyglądem aplikacji, tzw. assety.
 
 Struktura katalogu `assets` jest następująca:
