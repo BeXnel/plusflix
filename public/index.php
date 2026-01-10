@@ -18,32 +18,32 @@ switch ($actionType) {
         $view = $controller->indexAction($templating, $router);
         break;
     case 'index':
-        $controller = getController($action);
+        $controller = getController($actionModel);
         $view = $controller->indexAction($templating, $router);
         break;
     case 'create':
-        $controller = getController($action);
+        $controller = getController($actionModel);
         $view = $controller->createAction($_REQUEST['post'] ?? null, $templating, $router);
         break;
     case 'edit':
         if (! $_REQUEST['id']) {
             break;
         }
-        $controller = getController($action);
+        $controller = getController($actionModel);
         $view = $controller->editAction($_REQUEST['id'], $_REQUEST['post'] ?? null, $templating, $router);
         break;
     case 'show':
         if (! $_REQUEST['id']) {
             break;
         }
-        $controller = getController($action);
+        $controller = getController($actionModel);
         $view = $controller->showAction($_REQUEST['id'], $templating, $router);
         break;
     case 'delete':
         if (! $_REQUEST['id']) {
             break;
         }
-        $controller = getController($action);
+        $controller = getController($actionModel);
         $view = $controller->deleteAction($_REQUEST['id'], $router);
         break;
     default:

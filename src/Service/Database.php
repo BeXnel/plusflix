@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Service;
 
 use PDO;
+use PDOException;
 
 class Database
 {

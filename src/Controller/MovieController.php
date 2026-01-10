@@ -10,7 +10,12 @@ class MovieController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
-        $movies = Movie::findAll();
+        if (isset($_GET['q']) && !empty($_GET['q'])) {
+            $movies = Movie::search($_GET['q']);
+        } else {
+            $movies = Movie::findAll();
+        }
+
         $html = $templating->render('movie/index.html.php', [
             'movies' => $movies,
             'router' => $router,
@@ -33,7 +38,6 @@ class MovieController
         if ($requestPost) {
             $movie = Movie::fromArray($requestPost);
             $movie->save();
-
             $path = $router->generatePath('movie-index');
             $router->redirect($path);
             return null;
@@ -58,7 +62,6 @@ class MovieController
         if ($requestPost) {
             $movie->fill($requestPost);
             $movie->save();
-
             $path = $router->generatePath('movie-index');
             $router->redirect($path);
             return null;
