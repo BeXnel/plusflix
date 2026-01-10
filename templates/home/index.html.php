@@ -28,7 +28,8 @@
                 <div class="platform-badge netflix">N</div>
                 <div class="platform-badge disney">D+</div>
                 <div class="platform-badge netflix">N</div>
-                <div class="platform-badge imdb">B</div>
+                <div class="platform-badge netflix">N</div>
+
             </div>
             <button class="nav-arrow right">→</button>
         </section>
