@@ -85,6 +85,27 @@ class Genre
         return $genre;
     }
 
+    public static function findAllByIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $pdo = Database::getPDO();
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "SELECT * FROM genres WHERE id IN ($placeholders)";
+        $statement = $pdo->prepare($sql);
+        $statement->execute($ids);
+
+        $genres = [];
+        $genresArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($genresArray as $genreArray) {
+            $genres[] = self::fromArray($genreArray);
+        }
+
+        return $genres;
+    }
+
     /**
      * @return Genre[]
      */

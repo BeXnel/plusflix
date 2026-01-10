@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Exception\NotFoundException;
 use App\Model\Movie;
-use App\Service\MovieService;
 use App\Service\Router;
 use App\Service\Templating;
 
@@ -32,7 +31,8 @@ class MovieController
     public function createAction(?array $requestPost, Templating $templating, Router $router): ?string
     {
         if ($requestPost) {
-            $movie = MovieService::save($requestPost);
+            $movie = Movie::fromArray($requestPost);
+            $movie->save();
 
             $path = $router->generatePath('movie-index');
             $router->redirect($path);
