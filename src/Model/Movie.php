@@ -127,11 +127,11 @@ class Movie
         if (isset($array['duration'])) {
             $this->setDuration($array['duration']);
         }
-        if (isset($array['genres'])) {
-            $this->setGenres($array['genres']);
+        if (isset($array['genreIds'])) {
+            $this->setGenres(Genre::findAllByIds($array['genreIds']));
         }
-        if (isset($array['availability'])) {
-            $this->setAvailability($array['availability']);
+        if (isset($array['availabilityIds'])) {
+            $this->setAvailability(Platform::findAllByIds($array['availabilityIds']));
         }
 
         return $this;
@@ -152,7 +152,7 @@ class Movie
             return [];
         }
 
-       return self::buildMoviesWithRelations($moviesArray);
+        return self::buildMoviesWithRelations($moviesArray);
     }
 
     private static function buildMoviesWithRelations(array $moviesArray): array
@@ -225,11 +225,12 @@ class Movie
             return null;
         }
 
-        $movieArray['genres'] = Genre::findByMovieId($movieArray['id']);
-        $movieArray['availability'] = Platform::findByMovieId($movieArray['id']);
-        $movie = Movie::fromArray($movieArray);
+        $movies = self::buildMoviesWithRelations([$movieArray]);
+        if (empty($movies)) {
+            return null;
+        }
 
-        return $movie;
+        return $movies[0];
     }
 
     public static function search(string $searchTerm): array
@@ -340,8 +341,9 @@ class Movie
         $this->setAvailability([]);
     }
 
-    public function getGenres(): array {
-       return $this->genres;
+    public function getGenres(): array
+    {
+        return $this->genres;
     }
 
     public function setGenres(array $genres): Movie
@@ -360,7 +362,7 @@ class Movie
     }
 
     public function getAvailability(): array {
-       return $this->availability;
+        return $this->availability;
     }
 
     public function setAvailability(array $platforms): Movie
@@ -383,7 +385,7 @@ class Movie
      */
     public function getReviews(): array
     {
-       return Review::findByMovieId($this->getId());
+        return Review::findByMovieId($this->getId());
     }
 
     public function getAverageRating(): ?float

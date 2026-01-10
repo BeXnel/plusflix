@@ -101,12 +101,33 @@ class Platform
         return $platform;
     }
 
+    public static function findAllByIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $pdo = Database::getPDO();
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "SELECT * FROM platforms WHERE id IN ($placeholders)";
+        $statement = $pdo->prepare($sql);
+        $statement->execute($ids);
+
+        $platforms = [];
+        $platformsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($platformsArray as $platformArray) {
+            $platforms[] = self::fromArray($platformArray);
+        }
+
+        return $platforms;
+    }
+
     public static function findByMovieId(int $movieId): array
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT p.* FROM platforms p
-                JOIN movie_platforms mp ON p.id = mp.platform_id
-                WHERE mp.movie_id = :movie_id';
+                JOIN availability a ON p.id = a.platform_id
+                WHERE a.movie_id = :movie_id';
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $movieId]);
 
