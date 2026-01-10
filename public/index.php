@@ -14,7 +14,8 @@ $actionType = getActionType($actionData);
 
 switch ($actionType) {
     case null:
-        $view = 'PlusFlix Application';
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->indexAction($templating, $router);
         break;
     case 'index':
         $controller = getController($action);
@@ -71,6 +72,7 @@ function getController(string $actionModel): ?object {
         'movie' => new \App\Controller\MovieController(),
         'genre' => new \App\Controller\GenreController(),
         'platform' => new \App\Controller\PlatformController(),
+        'home' => new \App\Controller\HomeController(),
         default => null,
     };
 }

@@ -5,3 +5,126 @@
     }
   }
 }
+
+.search-section {
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+
+  .search-wrapper {
+      background: #e0e0e0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+
+      .search-input {
+          border: none;
+          background: transparent;
+          flex-grow: 1;
+          font-size: 16px;
+          outline: none;
+      }
+
+      .filter-icon {
+          background: none;
+          border: none;
+          font-size: 20px;
+          cursor: pointer;
+      }
+  }
+}
+
+.platforms-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 10px;
+
+  .nav-arrow {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+  }
+
+  .platforms-list {
+      display: flex;
+      gap: 10px;
+  }
+
+  .platform-badge {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      
+      &.netflix { background-color: #000; color: #E50914; font-size: 20px; }
+      &.disney { background-color: #113CCF; }
+      &.imdb { background-color: #F5C518; color: #000; }
+  }
+}
+
+.top-list-section {
+  h2 {
+      text-align: center;
+      margin-bottom: 20px;
+  }
+
+  .movie-row {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+
+      .rank-col {
+          position: relative;
+          width: 50px;
+          text-align: center;
+          font-size: 24px;
+          font-weight: bold;
+          margin-right: 10px;
+
+          .crown {
+              position: absolute;
+              top: -20px;
+              left: 50%;
+              transform: translateX(-50%);
+              font-size: 16px;
+          }
+      }
+
+      .info-col {
+          flex-grow: 1;
+          .movie-title { font-weight: bold; font-size: 16px; }
+          .movie-year { color: #666; font-size: 12px; }
+      }
+
+      .platform-col {
+          .platform-icon {
+              width: 30px;
+              height: 30px;
+              background: #000;
+              color: #fff;
+              border-radius: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              
+              &.netflix { background-color: #E50914; }
+              &.disney { background-color: #113CCF; }
+          }
+      }
+  }
+}
