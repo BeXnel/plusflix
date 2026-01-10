@@ -101,6 +101,24 @@ class Platform
         return $platform;
     }
 
+    public static function findByMovieId(int $movieId): array
+    {
+        $pdo = Database::getPDO();
+        $sql = 'SELECT p.* FROM platforms p
+                JOIN movie_platforms mp ON p.id = mp.platform_id
+                WHERE mp.movie_id = :movie_id';
+        $statement = $pdo->prepare($sql);
+        $statement->execute([':movie_id' => $movieId]);
+
+        $platforms = [];
+        $platformsArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($platformsArray as $platformArray) {
+            $platforms[] = self::fromArray($platformArray);
+        }
+
+        return $platforms;
+    }
+
     public function save(): void
     {
         $pdo = Database::getPDO();

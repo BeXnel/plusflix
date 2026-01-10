@@ -12,6 +12,21 @@ class Movie
     private ?string $description = null;
     private ?float $duration = null;
 
+    /**
+     * @var Genre[] $genres
+     */
+    private array $genres = [];
+
+    /**
+     * @var Platform[] $availability
+     */
+    private array $availability = [];
+
+    /**
+     * @var Review[] $reviews
+     */
+    private array $reviews = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,6 +127,12 @@ class Movie
         if (isset($array['duration'])) {
             $this->setDuration($array['duration']);
         }
+        if (isset($array['genres'])) {
+            $this->setGenres($array['genres']);
+        }
+        if (isset($array['availability'])) {
+            $this->setAvailability($array['availability']);
+        }
 
         return $this;
     }
@@ -125,14 +146,71 @@ class Movie
         $sql = 'SELECT * FROM movies';
         $statement = $pdo->prepare($sql);
         $statement->execute();
-
-        $movies = [];
         $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        if (empty($moviesArray)) {
+            return [];
+        }
+
+       return self::buildMoviesWithRelations($moviesArray);
+    }
+
+    private static function buildMoviesWithRelations(array $moviesArray): array
+    {
+        $movieIds = array_column($moviesArray, 'id');
+        $genresByMovie = self::getGenresByMovie($movieIds);
+        $platformsByMovie = self::getPlatformsByMovie($movieIds);
+        $movies = [];
+
         foreach ($moviesArray as $movieArray) {
+            $movieArray['genres'] = $genresByMovie[$movieArray['id']] ?? [];
+            $movieArray['availability'] = $platformsByMovie[$movieArray['id']] ?? [];
             $movies[] = self::fromArray($movieArray);
         }
 
         return $movies;
+    }
+
+    private static function getGenresByMovie(array $movieIds): array
+    {
+        $pdo = Database::getPDO();
+        $genresSql = 'SELECT mg.movie_id, g.id, g.name
+                      FROM genres g
+                      JOIN movie_genres mg ON g.id = mg.genre_id
+                      WHERE mg.movie_id IN (' . implode(',', array_map('intval', $movieIds)) . ')';
+        $genresStatement = $pdo->prepare($genresSql);
+        $genresStatement->execute();
+
+        $genresByMovie = [];
+        foreach ($genresStatement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            if (!isset($genresByMovie[$row['movie_id']])) {
+                $genresByMovie[$row['movie_id']] = [];
+            }
+            $genresByMovie[$row['movie_id']][] = Genre::fromArray($row);
+        }
+
+        return $genresByMovie;
+    }
+
+    private static function getPlatformsByMovie(array $movieIds): array
+    {
+        $pdo = Database::getPDO();
+        $platformsSql = 'SELECT a.movie_id, p.id, p.name, p.price
+                         FROM platforms p
+                         JOIN availability a ON p.id = a.platform_id
+                         WHERE a.movie_id IN (' . implode(',', array_map('intval', $movieIds)) . ')';
+        $platformsStatement = $pdo->prepare($platformsSql);
+        $platformsStatement->execute();
+
+        $platformsByMovie = [];
+        foreach ($platformsStatement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            if (!isset($platformsByMovie[$row['movie_id']])) {
+                $platformsByMovie[$row['movie_id']] = [];
+            }
+            $platformsByMovie[$row['movie_id']][] = Platform::fromArray($row);
+        }
+
+        return $platformsByMovie;
     }
 
     public static function find($id): ?Movie
@@ -146,6 +224,9 @@ class Movie
         if (! $movieArray) {
             return null;
         }
+
+        $movieArray['genres'] = Genre::findByMovieId($movieArray['id']);
+        $movieArray['availability'] = Platform::findByMovieId($movieArray['id']);
         $movie = Movie::fromArray($movieArray);
 
         return $movie;
@@ -161,14 +242,14 @@ class Movie
         $statement = $pdo->prepare($sql);
 
         $escapedSearchTerm = self::escapeLikeSpecialChars($searchTerm);
-
         $statement->execute(['searchTerm' => '%' . $escapedSearchTerm . '%']);
-        $movies = [];
         $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        foreach ($moviesArray as $movieArray) {
-            $movies[] = self::fromArray($movieArray);
+
+        if (empty($moviesArray)) {
+            return [];
         }
-        return $movies;
+
+        return self::buildMoviesWithRelations($moviesArray);
     }
 
     private static function escapeLikeSpecialChars(string $term): string
@@ -203,6 +284,41 @@ class Movie
                 ':id' => $this->getId(),
             ]);
         }
+
+        $this->saveGenres();
+        $this->saveAvailability();
+    }
+
+    private function saveGenres(): void
+    {
+        $this->clearGenres();
+        foreach ($this->getGenres() as $genre) {
+            $this->addGenre($genre->getId());
+        }
+    }
+
+    private function clearGenres(): void
+    {
+        $pdo = Database::getPDO();
+        $sql = 'DELETE FROM movie_genres WHERE movie_id = :movie_id';
+        $statement = $pdo->prepare($sql);
+        $statement->execute([':movie_id' => $this->getId()]);
+    }
+
+    private function saveAvailability(): void
+    {
+        $this->clearAvailability();
+        foreach ($this->getAvailability() as $platform) {
+            $this->addAvailability($platform->getId());
+        }
+    }
+
+    private function clearAvailability(): void
+    {
+        $pdo = Database::getPDO();
+        $sql = 'DELETE FROM availability WHERE movie_id = :movie_id';
+        $statement = $pdo->prepare($sql);
+        $statement->execute([':movie_id' => $this->getId()]);
     }
 
     public function delete(): void
@@ -220,21 +336,19 @@ class Movie
         $this->setDirector(null);
         $this->setDescription(null);
         $this->setDuration(null);
+        $this->setGenres([]);
+        $this->setAvailability([]);
     }
 
     public function getGenres(): array {
-        $pdo = Database::getPDO();
-        $sql = 'SELECT g.* FROM genres g
-                JOIN movie_genres mg ON g.id = mg.genre_id
-                WHERE mg.movie_id = :movie_id';
-        $statement = $pdo->prepare($sql);
-        $statement->execute(['movie_id' => $this->getId()]);
+       return $this->genres;
+    }
 
-        $genres = [];
-        foreach ($statement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $genres[] = Genre::fromArray($row);
-        }
-        return $genres;
+    public function setGenres(array $genres): Movie
+    {
+        $this->genres = $genres;
+
+        return $this;
     }
 
     public function addGenre(int $genreId): void
@@ -245,12 +359,15 @@ class Movie
         $statement->execute([':movie_id' => $this->getId(), ':genre_id' => $genreId]);
     }
 
-    public function removeGenre(int $genreId): void
+    public function getAvailability(): array {
+       return $this->availability;
+    }
+
+    public function setAvailability(array $platforms): Movie
     {
-        $pdo = Database::getPDO();
-        $sql = 'DELETE FROM movie_genres WHERE movie_id = :movie_id AND genre_id = :genre_id';
-        $statement = $pdo->prepare($sql);
-        $statement->execute([':movie_id' => $this->getId(), ':genre_id' => $genreId]);
+        $this->availability = $platforms;
+
+        return $this;
     }
 
     public function addAvailability(int $platformId): void
@@ -261,47 +378,12 @@ class Movie
         $statement->execute([':movie_id' => $this->getId(), ':platform_id' => $platformId]);
     }
 
-    public function removeAvailability(int $platformId): void
-    {
-        $pdo = Database::getPDO();
-        $sql = 'DELETE FROM availability WHERE movie_id = :movie_id AND platform_id = :platform_id';
-        $statement = $pdo->prepare($sql);
-        $statement->execute([':movie_id' => $this->getId(), ':platform_id' => $platformId]);
-    }
-
     /**
      * @return Review[]
      */
     public function getReviews(): array
     {
        return Review::findByMovieId($this->getId());
-    }
-
-    public function addReview(int $rating, ?string $comment = null): Review
-    {
-        $review = new Review();
-        $review->setMovieId($this->getId())
-                ->setRating($rating)
-                ->setComment($comment);
-        $review->save();
-
-        return $review;
-    }
-
-    public function removeReview(int $reviewId): void
-    {
-        $review = Review::find($reviewId);
-        if ($review && $review->getMovieId() === $this->getId()) {
-            $review->delete();
-        }
-    }
-
-    public function clearReviews(): void
-    {
-        $pdo = Database::getPDO();
-        $sql = 'DELETE FROM reviews WHERE movie_id = :movie_id';
-        $statement = $pdo->prepare($sql);
-        $statement->execute([':movie_id' => $this->getId()]);
     }
 
     public function getAverageRating(): ?float
