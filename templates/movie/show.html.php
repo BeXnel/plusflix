@@ -1,10 +1,8 @@
 <?php
 /** @var \App\Model\Movie $movie */
 /** @var \App\Service\Router $router */
-
 $title = $movie->getTitle();
 $bodyClass = 'show';
-
 ob_start(); ?>
     <h1><?= $movie->getTitle() ?> (<?= $movie->getYear() ?>)</h1>
     <p>Reżyser: <?= $movie->getDirector() ?></p>
@@ -14,10 +12,11 @@ ob_start(); ?>
     <div class="platforms-section">
         <h3>Dostępne na:</h3>
         <div class="platforms-list">
-            <?php foreach ($movie->getAvailability() as $platform): 
-                $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($platform->getName())); ?>
+            <?php foreach ($movie->getAvailability() as $platform):
+                $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($platform->getName()));
+                $display_text = ($clean_name === 'disney') ? 'D+' : strtoupper(substr($clean_name, 0, 1)); ?>
                 <div class="platform-badge <?= $clean_name ?>">
-                    <?= strtoupper(substr($clean_name, 0, 1)) ?>
+                    <?= $display_text ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -44,5 +43,4 @@ ob_start(); ?>
         <li><a href="<?= $router->generatePath('movie-index') ?>">Powrót do listy</a></li>
     </ul>
 <?php $main = ob_get_clean();
-
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

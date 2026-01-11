@@ -1,6 +1,5 @@
 <?php
 namespace App\Model;
-
 use App\Service\Database;
 
 class Movie
@@ -11,17 +10,14 @@ class Movie
     private ?string $director = null;
     private ?string $description = null;
     private ?float $duration = null;
-
     /**
      * @var Genre[] $genres
      */
     private array $genres = [];
-
     /**
      * @var Platform[] $availability
      */
     private array $availability = [];
-
     /**
      * @var Review[] $reviews
      */
@@ -35,7 +31,6 @@ class Movie
     public function setId(?int $id): Movie
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -47,7 +42,6 @@ class Movie
     public function setTitle(?string $title): Movie
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -59,7 +53,6 @@ class Movie
     public function setYear(?int $year): Movie
     {
         $this->year = $year;
-
         return $this;
     }
 
@@ -71,7 +64,6 @@ class Movie
     public function setDirector(?string $director): Movie
     {
         $this->director = $director;
-
         return $this;
     }
 
@@ -83,7 +75,6 @@ class Movie
     public function setDescription(?string $description): Movie
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -95,7 +86,6 @@ class Movie
     public function setDuration(?float $duration): Movie
     {
         $this->duration = $duration;
-
         return $this;
     }
 
@@ -103,7 +93,6 @@ class Movie
     {
         $movie = new self();
         $movie->fill($array);
-
         return $movie;
     }
 
@@ -127,13 +116,16 @@ class Movie
         if (isset($array['duration'])) {
             $this->setDuration($array['duration']);
         }
-        if (isset($array['genreIds'])) {
+        if (isset($array['genres'])) {
+            $this->setGenres($array['genres']);
+        } elseif (isset($array['genreIds'])) {
             $this->setGenres(Genre::findAllByIds($array['genreIds']));
         }
-        if (isset($array['availabilityIds'])) {
+        if (isset($array['availability'])) {
+            $this->setAvailability($array['availability']);
+        } elseif (isset($array['availabilityIds'])) {
             $this->setAvailability(Platform::findAllByIds($array['availabilityIds']));
         }
-
         return $this;
     }
 
@@ -147,11 +139,9 @@ class Movie
         $statement = $pdo->prepare($sql);
         $statement->execute();
         $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
         if (empty($moviesArray)) {
             return [];
         }
-
         return self::buildMoviesWithRelations($moviesArray);
     }
 
@@ -161,13 +151,11 @@ class Movie
         $genresByMovie = self::getGenresByMovie($movieIds);
         $platformsByMovie = self::getPlatformsByMovie($movieIds);
         $movies = [];
-
         foreach ($moviesArray as $movieArray) {
             $movieArray['genres'] = $genresByMovie[$movieArray['id']] ?? [];
             $movieArray['availability'] = $platformsByMovie[$movieArray['id']] ?? [];
             $movies[] = self::fromArray($movieArray);
         }
-
         return $movies;
     }
 
@@ -180,7 +168,6 @@ class Movie
                       WHERE mg.movie_id IN (' . implode(',', array_map('intval', $movieIds)) . ')';
         $genresStatement = $pdo->prepare($genresSql);
         $genresStatement->execute();
-
         $genresByMovie = [];
         foreach ($genresStatement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             if (!isset($genresByMovie[$row['movie_id']])) {
@@ -188,7 +175,6 @@ class Movie
             }
             $genresByMovie[$row['movie_id']][] = Genre::fromArray($row);
         }
-
         return $genresByMovie;
     }
 
@@ -201,7 +187,6 @@ class Movie
                          WHERE a.movie_id IN (' . implode(',', array_map('intval', $movieIds)) . ')';
         $platformsStatement = $pdo->prepare($platformsSql);
         $platformsStatement->execute();
-
         $platformsByMovie = [];
         foreach ($platformsStatement->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             if (!isset($platformsByMovie[$row['movie_id']])) {
@@ -209,7 +194,6 @@ class Movie
             }
             $platformsByMovie[$row['movie_id']][] = Platform::fromArray($row);
         }
-
         return $platformsByMovie;
     }
 
@@ -219,17 +203,14 @@ class Movie
         $sql = 'SELECT * FROM movies WHERE id = :id';
         $statement = $pdo->prepare($sql);
         $statement->execute([':id' => $id]);
-
         $movieArray = $statement->fetch(\PDO::FETCH_ASSOC);
         if (! $movieArray) {
             return null;
         }
-
         $movies = self::buildMoviesWithRelations([$movieArray]);
         if (empty($movies)) {
             return null;
         }
-
         return $movies[0];
     }
 
@@ -241,15 +222,12 @@ class Movie
                    OR director LIKE :searchTerm ESCAPE \'!\'
                    OR description LIKE :searchTerm ESCAPE \'!\'';
         $statement = $pdo->prepare($sql);
-
         $escapedSearchTerm = self::escapeLikeSpecialChars($searchTerm);
         $statement->execute(['searchTerm' => '%' . $escapedSearchTerm . '%']);
         $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
         if (empty($moviesArray)) {
             return [];
         }
-
         return self::buildMoviesWithRelations($moviesArray);
     }
 
@@ -271,7 +249,6 @@ class Movie
                 ':description' => $this->getDescription(),
                 ':duration' => $this->getDuration(),
             ]);
-
             $this->setId($pdo->lastInsertId());
         } else {
             $sql = "UPDATE movies SET title = :title, year = :year, director = :director, description = :description, duration = :duration WHERE id = :id";
@@ -285,7 +262,6 @@ class Movie
                 ':id' => $this->getId(),
             ]);
         }
-
         $this->saveGenres();
         $this->saveAvailability();
     }
@@ -330,7 +306,6 @@ class Movie
         $statement->execute([
             ':id' => $this->getId(),
         ]);
-
         $this->setId(null);
         $this->setTitle(null);
         $this->setYear(null);
@@ -349,7 +324,6 @@ class Movie
     public function setGenres(array $genres): Movie
     {
         $this->genres = $genres;
-
         return $this;
     }
 
@@ -368,7 +342,6 @@ class Movie
     public function setAvailability(array $platforms): Movie
     {
         $this->availability = $platforms;
-
         return $this;
     }
 
@@ -394,7 +367,6 @@ class Movie
         $sql = 'SELECT AVG(rating) as avg_rating FROM reviews WHERE movie_id = :movie_id';
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $this->getId()]);
-
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         return $result['avg_rating'] ? (float) $result['avg_rating'] : null;
     }

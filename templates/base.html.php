@@ -9,7 +9,15 @@
     <title><?= $title ?? 'Custom Framework' ?></title>
 </head>
 <body <?= isset($bodyClass) ? "class='$bodyClass'" : '' ?>>
-<nav><?php require(__DIR__ . DIRECTORY_SEPARATOR . 'nav.html.php') ?></nav>
+<section class="search-section">
+    <form action="/index.php" method="GET" class="search-form">
+        <input type="hidden" name="action" value="movie-index">
+        <div class="search-wrapper">
+            <input type="text" name="q" placeholder="Szukaj..." class="search-input">
+            <button type="button" class="filter-icon">☰</button>
+        </div>
+    </form>
+</section>
 <main><?= $main ?? null ?></main>
 <footer>&copy;<?= date('Y') ?> Custom Framework</footer>
 </body>

@@ -1,42 +1,23 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLUSFLIX</title>
-    
-    <link rel="stylesheet" href="/assets/src/less/style.css">
-    
-</head>
-<body>
-
+<?php
+/** @var array $topMovies */
+/** @var \App\Service\Router $router */
+$title = 'PLUSFLIX';
+$bodyClass = 'index';
+ob_start(); ?>
     <div class="container">
-        <section class="search-section">
-            <form action="/index.php" method="GET" class="search-form">
-                <input type="hidden" name="action" value="movie-index">
-                
-                <div class="search-wrapper">
-                    <input type="text" name="q" placeholder="Szukaj..." class="search-input">
-                    <button type="button" class="filter-icon">☰</button>
-                </div>
-            </form>
-        </section>
-
         <section class="platforms-section">
             <button class="nav-arrow left">←</button>
             <div class="platforms-list">
                 <div class="platform-badge netflix">N</div>
                 <div class="platform-badge disney">D+</div>
-                <div class="platform-badge netflix">N</div>
-                <div class="platform-badge netflix">N</div>
-
+                <div class="platform-badge hbo">H</div>
+                <div class="platform-badge skyshowtime">S</div>
+                <div class="platform-badge prime">P</div>
             </div>
             <button class="nav-arrow right">→</button>
         </section>
-
         <section class="top-list-section">
             <h2>Top filmy:</h2>
-            
             <div class="movies-list">
                 <?php foreach ($topMovies as $movie): ?>
                     <div class="movie-row">
@@ -46,15 +27,17 @@
                             <?php endif; ?>
                             <span class="rank-num rank-<?= $movie['rank'] ?>"><?= $movie['rank'] ?>.</span>
                         </div>
-
                         <div class="info-col">
                             <div class="movie-title"><?= $movie['title'] ?></div>
                             <div class="movie-year"><?= $movie['year'] ?></div>
                         </div>
-
                         <div class="platform-col">
-                            <div class="platform-icon <?= $movie['platform'] ?>">
-                                <?= strtoupper(substr($movie['platform'], 0, 1)) ?>
+                            <?php
+                            $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($movie['platform']));
+                            $display_text = ($clean_name === 'disney') ? 'D+' : strtoupper(substr($clean_name, 0, 1));
+                            ?>
+                            <div class="platform-badge <?= $clean_name ?>">
+                                <?= $display_text ?>
                             </div>
                         </div>
                     </div>
@@ -62,6 +45,5 @@
             </div>
         </section>
     </div>
-
-</body>
-</html>
+<?php $main = ob_get_clean();
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

@@ -1,10 +1,8 @@
 <?php
 /** @var \App\Model\Movie[] $movies */
 /** @var \App\Service\Router $router */
-
 $title = 'Lista filmów';
 $bodyClass = 'index';
-
 ob_start(); ?>
     <h1>Lista filmów</h1>
     <a href="<?= $router->generatePath('') ?>">Powrót do strony głównej</a>
@@ -16,14 +14,19 @@ ob_start(); ?>
                 <?php foreach ($movies as $movie): ?>
                     <div class="movie-row">
                         <div class="info-col">
-                            <div class="movie-title"><a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>"><?= $movie->getTitle() ?></a></div>
+                            <div class="movie-title">
+                                <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>">
+                                    <?= $movie->getTitle() ?>
+                                </a>
+                            </div>
                             <div class="movie-year"><?= $movie->getYear() ?></div>
                         </div>
                         <div class="platform-col">
-                            <?php foreach ($movie->getAvailability() as $platform): 
-                                $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($platform->getName())); ?>
-                                <div class="platform-icon <?= $clean_name ?>">
-                                    <?= strtoupper(substr($clean_name, 0, 1)) ?>
+                            <?php foreach ($movie->getAvailability() as $platform):
+                                $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($platform->getName()));
+                                $display_text = ($clean_name === 'disney') ? 'D+' : strtoupper(substr($clean_name, 0, 1)); ?>
+                                <div class="platform-badge <?= $clean_name ?>">
+                                    <?= $display_text ?>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -33,5 +36,4 @@ ob_start(); ?>
         </div>
     </section>
 <?php $main = ob_get_clean();
-
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
