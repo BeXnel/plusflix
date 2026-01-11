@@ -5,148 +5,449 @@
         }
     }
 }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@primary-color: #6366f1;
+@primary-hover: #4f46e5;
+@bg-dark: #0f0f23;
+@bg-light: #1a1a2e;
+@text-primary: #ffffff;
+@text-secondary: #a0a0b0;
+@border-color: #2a2a3e;
+@card-bg: #16162a;
+
+.app-header {
+    background: linear-gradient(135deg, @bg-dark 0%, @bg-light 100%);
+    border-bottom: 1px solid @border-color;
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .logo {
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        
+        .logo-plus {
+            color: @primary-color;
+        }
+        
+        .logo-flix {
+            color: @text-primary;
+        }
+    }
+    
+    .saved-btn {
+        background: @card-bg;
+        border: 1px solid @border-color;
+        color: @text-primary;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: @primary-color;
+            border-color: @primary-color;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+
+.index {
+    background: linear-gradient(180deg, @bg-dark 0%, #0a0a15 100%);
+    min-height: 100vh;
+    color: @text-primary;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 4rem 0 3rem;
+    
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, @text-primary 0%, @primary-color 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        
+        @media (max-width: 768px) {
+            font-size: 2rem;
+        }
+    }
+    
+    .hero-subtitle {
+        font-size: 1.125rem;
+        color: @text-secondary;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+}
+
+.section-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: @text-primary;
+    margin-bottom: 1.5rem;
+    
+    @media (max-width: 768px) {
+        font-size: 1.25rem;
+    }
+}
+
 .search-section {
     padding: 20px 0;
     display: flex;
     justify-content: center;
-    .search-wrapper {
-        background: #e0e0e0;
-        border-radius: 8px;
-        padding: 8px 12px;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        max-width: 400px;
-        border: 1px solid #ccc;
-        .search-input {
-            border: none;
-            background: transparent;
-            flex-grow: 1;
-            font-size: 16px;
-            outline: none;
-        }
-        .filter-icon {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
-    }
+  }
+.search-section .search-wrapper {
+background: #e0e0e0;
+border-radius: 8px;
+padding: 8px 12px;
+display: flex;
+align-items: center;
+width: 100%;
+max-width: 400px;
+border: 1px solid #ccc;
 }
+.search-section .search-wrapper .search-input {
+border: none;
+background: transparent;
+flex-grow: 1;
+font-size: 16px;
+outline: none;
+}
+.search-section .search-wrapper .filter-icon {
+background: none;
+border: none;
+font-size: 20px;
+cursor: pointer;
+}
+
 .platforms-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-    gap: 10px;
-    .nav-arrow {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-    }
-    .platforms-list {
-        display: flex;
-        gap: 10px;
-    }
-    .platform-badge {
-        width: 40px;
-        height: 40px;
+    padding: 2rem 0 3rem;
+    
+    .platforms-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
-        font-weight: bold;
-        border-radius: 5px;
+        gap: 1rem;
+    }
+    
+    .nav-arrow {
+        background: @card-bg;
+        border: 1px solid @border-color;
+        color: @text-primary;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: @primary-color;
+            border-color: @primary-color;
+            transform: scale(1.1);
+        }
+        
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+    
+    .platforms-list {
+        display: flex;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .platform-badge {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .platform-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
         &.netflix {
-            background-color: #000;
-            color: #E50914;
-            font-size: 20px;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            
+            .platform-logo {
+                color: #E50914;
+            }
         }
+        
         &.disney {
-            background-color: #113CCF;
+            background: linear-gradient(135deg, #113CCF 0%, #1e56e0 100%);
+            
+            .platform-logo {
+                color: @text-primary;
+            }
         }
+        
         &.hbo {
-            background-color: #000;
-            color: #fff;
+            background: linear-gradient(135deg, #000000 0%, #2a2a2a 100%);
+            
+            .platform-logo {
+                color: @text-primary;
+            }
         }
+        
         &.skyshowtime {
-            background-color: #007bff;
-            color: #fff;
+            background: linear-gradient(135deg, #007bff 0%, #0d6efd 100%);
+            
+            .platform-logo {
+                color: @text-primary;
+            }
         }
+        
         &.prime {
-            background-color: #00A8E1;
-            color: #fff;
+            background: linear-gradient(135deg, #00A8E1 0%, #00c4ff 100%);
+            
+            .platform-logo {
+                color: @text-primary;
+            }
         }
     }
 }
+
 .top-list-section {
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
+    padding: 2rem 0 4rem;
+    
+    .movies-list {
+        display: grid;
+        gap: 1rem;
     }
-    .movie-row {
-        background: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 10px 15px;
-        margin-bottom: 10px;
+    
+    .movie-card {
+        background: @card-bg;
+        border: 1px solid @border-color;
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
         display: flex;
         align-items: center;
-        .rank-col {
+        gap: 1.25rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        
+        &:hover {
+            border-color: @primary-color;
+            transform: translateX(8px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+        }
+        
+        .rank-badge {
             position: relative;
-            width: 50px;
+            min-width: 50px;
             text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            margin-right: 10px;
-            .crown {
+            
+            .crown-icon {
                 position: absolute;
-                top: -20px;
+                top: -28px;
                 left: 50%;
                 transform: translateX(-50%);
-                font-size: 16px;
+                font-size: 1.25rem;
+                filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+            }
+            
+            .rank-number {
+                font-size: 2rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, @primary-color 0%, #8b5cf6 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
             }
         }
-        .info-col {
-            flex-grow: 1;
+        
+        .movie-info {
+            flex: 1;
+            min-width: 0;
+            
             .movie-title {
-                font-weight: bold;
-                font-size: 16px;
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: @text-primary;
+                margin-bottom: 0.25rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
+            
             .movie-year {
-                color: #666;
-                font-size: 12px;
+                font-size: 0.875rem;
+                color: @text-secondary;
             }
         }
-        .platform-col {
-            display: flex;
-            gap: 5px;
+        
+        .movie-platform {
             .platform-badge {
-                width: 30px;
-                height: 30px;
-                background: #000;
-                color: #fff;
-                border-radius: 4px;
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                
+                .platform-logo {
+                    font-size: 1.125rem;
+                    font-weight: 700;
+                }
+                
                 &.netflix {
-                    background-color: #000;
-                    color: #E50914;
-                    font-size: 20px;
+                    background: #000000;
+                    .platform-logo { color: #E50914; }
                 }
+                
                 &.disney {
-                    background-color: #113CCF;
+                    background: #113CCF;
+                    .platform-logo { color: @text-primary; }
                 }
+                
                 &.hbo {
-                    background-color: #000;
+                    background: #000000;
+                    .platform-logo { color: @text-primary; }
                 }
+                
                 &.skyshowtime {
-                    background-color: #007bff;
+                    background: #007bff;
+                    .platform-logo { color: @text-primary; }
                 }
+                
                 &.prime {
-                    background-color: #00A8E1;
+                    background: #00A8E1;
+                    .platform-logo { color: @text-primary; }
+                }
+            }
+        }
+    }
+}
+
+.app-footer {
+    background: @bg-light;
+    border-top: 1px solid @border-color;
+    padding: 2rem 0;
+    text-align: center;
+    color: @text-secondary;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        .header-container {
+            padding: 0 1rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .hero-section {
+        padding: 3rem 0 2rem;
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+    }
+    
+    .platforms-section {
+        .platforms-list {
+            gap: 0.75rem;
+        }
+        
+        .platform-badge {
+            width: 52px;
+            height: 52px;
+            
+            .platform-logo {
+                font-size: 1.25rem;
+            }
+        }
+    }
+    
+    .top-list-section {
+        .movie-card {
+            padding: 1rem;
+            gap: 1rem;
+            
+            .rank-badge {
+                min-width: 40px;
+                
+                .rank-number {
+                    font-size: 1.5rem;
+                }
+            }
+            
+            .movie-info {
+                .movie-title {
+                    font-size: 1rem;
+                }
+            }
+            
+            .movie-platform .platform-badge {
+                width: 36px;
+                height: 36px;
+                
+                .platform-logo {
+                    font-size: 1rem;
                 }
             }
         }
