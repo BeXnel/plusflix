@@ -23,14 +23,14 @@ switch ($actionType) {
         break;
     case 'create':
         $controller = getController($actionModel);
-        $view = $controller->createAction($_REQUEST['post'] ?? null, $templating, $router);
+        $view = $controller->createAction($_REQUEST['data'] ?? null, $templating, $router);
         break;
     case 'edit':
         if (! $_REQUEST['id']) {
             break;
         }
         $controller = getController($actionModel);
-        $view = $controller->editAction($_REQUEST['id'], $_REQUEST['post'] ?? null, $templating, $router);
+        $view = $controller->editAction($_REQUEST['id'], $_REQUEST['data'] ?? null, $templating, $router);
         break;
     case 'show':
         if (! $_REQUEST['id']) {
@@ -73,6 +73,7 @@ function getController(string $actionModel): ?object {
         'genre' => new \App\Controller\GenreController(),
         'platform' => new \App\Controller\PlatformController(),
         'home' => new \App\Controller\HomeController(),
+        'admin' => new \App\Controller\AdminController(),
         default => null,
     };
 }

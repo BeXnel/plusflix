@@ -22,6 +22,11 @@ custom-php-framework
 php -S localhost:55555 -t .\public\
 ```
 
+## Build lessc
+```
+lessc public\assets\src\less\style.less public\assets\dist\style.min.css --clean-css --source-map
+```
+
 Poszczególne katalogi zostaną opisane poniżej.
 
 ## `config`
