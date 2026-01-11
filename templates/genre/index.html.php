@@ -4,10 +4,6 @@
 $title = 'Gatunki filmów';
 $bodyClass = 'index';
 ob_start(); ?>
-    <style>
-
-    </style>
-
     <div class="genre-admin">
         <h1>Gatunki filmowe</h1>
         <div class="actions">

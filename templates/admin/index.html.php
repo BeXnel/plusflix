@@ -33,6 +33,7 @@ ob_start(); ?>
                         </a>
                     </div>
                 </div>
+            </div>
         </div>
     </section>
 <?php $main = ob_get_clean();

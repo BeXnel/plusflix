@@ -14,7 +14,7 @@ ob_start(); ?>
         <input type="hidden" name="id" value="<?= $genre->getId() ?>">
     </form>
 
-    <a href="<?= $router->generatePath('genre-index') ?>">Powrót</a></li>
+    <a href="<?= $router->generatePath('genre-index') ?>">Powrót</a>
 
 <?php $main = ob_get_clean();
 
