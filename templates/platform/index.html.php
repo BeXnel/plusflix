@@ -27,8 +27,8 @@ ob_start(); ?>
                 <tbody>
                 <?php foreach ($platforms as $platform): ?>
                     <tr>
-                        <td><?= htmlspecialchars($platform->getName()) ?></td>
-                        <td><?= htmlspecialchars($platform->getPrice(), ENT_QUOTES, 'UTF-8') ?> zł</td>
+                        <td><?= $platform->getName() ?></td>
+                        <td><?= $platform->getPrice() ?> zł</td>
                         <td class="ops">
                             <a href="<?= $router->generatePath('platform-edit', ['id' => $platform->getId()]) ?>">Edytuj</a>
                             <a href="<?= $router->generatePath('platform-delete', ['id' => $platform->getId()]) ?>"

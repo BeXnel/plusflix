@@ -39,7 +39,7 @@ ob_start(); ?>
                             echo implode(', ', $gNames);
                         ?>
                     </td>
-                    <td><?= htmlspecialchars($movie->getYear(), ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?= htmlspecialchars((string) $movie->getYear(), ENT_QUOTES, 'UTF-8') ?></td>
                     <td class="ops">
                         <a href="<?= $router->generatePath('review-admin-list', ['movieId' => $movie->getId()]) ?>">Komentarze</a>
                         <a href="<?= $router->generatePath('movie-edit', ['id' => $movie->getId()]) ?>">Edytuj</a>
