@@ -105,7 +105,7 @@ class Movie
             $this->setTitle($array['title']);
         }
         if (isset($array['year'])) {
-            $this->setYear($array['year']);
+            $this->setYear(\intval($array['year']));
         }
         if (isset($array['director'])) {
             $this->setDirector($array['director']);
@@ -114,7 +114,7 @@ class Movie
             $this->setDescription($array['description']);
         }
         if (isset($array['duration'])) {
-            $this->setDuration($array['duration']);
+            $this->setDuration(\floatval($array['duration']));
         }
         if (isset($array['genres'])) {
             $this->setGenres($array['genres']);

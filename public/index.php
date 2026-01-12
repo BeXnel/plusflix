@@ -46,6 +46,25 @@ switch ($actionType) {
         $controller = getController($actionModel);
         $view = $controller->deleteAction($_REQUEST['id'], $router);
         break;
+    case 'admin':
+        $actionSubtype = $actionData[2] ?? null;
+        if ($actionSubtype === 'list') {
+            if (! $_REQUEST['movieId']) {
+                break;
+            }
+            $controller = getController($actionModel);
+            if (method_exists($controller, 'adminListAction')) {
+                $view = $controller->adminListAction($_REQUEST['movieId'], $templating, $router);
+            }
+        } else {
+            $controller = getController($actionModel);
+            if (method_exists($controller, 'adminAction')) {
+                $view = $controller->adminAction($templating, $router);
+            } else {
+                $view = $controller->indexAction($templating, $router);
+            }
+        }
+        break;
     default:
         $view = 'Not found';
         break;

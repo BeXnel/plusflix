@@ -19,6 +19,8 @@
     </form>
 </section>
 <main><?= $main ?? null ?></main>
-<footer>&copy;<?= date('Y') ?> Plusflix</footer>
+ <footer class="app-footer">
+        <p>&copy; <?= date('Y') ?> PLUSFLIX</p>
+    </footer>
 </body>
 </html>

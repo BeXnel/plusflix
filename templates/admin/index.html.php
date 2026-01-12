@@ -3,38 +3,26 @@
 $title = 'Panel administracyjny';
 $bodyClass = 'index';
 ob_start(); ?>
-    <h1>Panel administracyjny</h1>
-    <a href="<?= $router->generatePath('') ?>">Powrót do strony głównej</a>
-    <section class="top-list-section">
-        <div class="movies-list">
-            <div class="movie-row">
-                <div class="info-col">
-                    <div class="movie-title">
-                        <a href="<?= $router->generatePath('admin-manage-movies') ?>">
-                            Zarządzaj filmami
-                        </a>
-                    </div>
-                </div>
+    <div class="admin-panel">
+        <h1>Panel administracyjny</h1>
+        <div class="actions">
+            <a href="<?= $router->generatePath('') ?>">Powrót do strony głównej</a>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-card">
+                <div class="card-title">Filmy</div>
+                <a href="<?= $router->generatePath('movie-admin') ?>" class="btn-primary">Zarządzaj filmami</a>
             </div>
-            <div class="movie-row">
-                <div class="info-col">
-                    <div class="movie-title">
-                        <a href="<?= $router->generatePath('genre-index') ?>">
-                            Zarządzaj gatunkami
-                        </a>
-                    </div>
-                </div>
+            <div class="admin-card">
+                <div class="card-title">Gatunki</div>
+                <a href="<?= $router->generatePath('genre-index') ?>" class="btn-primary">Zarządzaj gatunkami</a>
             </div>
-            <div class="movie-row">
-                <div class="info-col">
-                    <div class="movie-title">
-                        <a href="<?= $router->generatePath('admin-manage-platforms') ?>">
-                            Zarządzaj platformami
-                        </a>
-                    </div>
-                </div>
+            <div class="admin-card">
+                <div class="card-title">Platformy</div>
+                <a href="<?= $router->generatePath('platform-index') ?>" class="btn-primary">Zarządzaj platformami</a>
             </div>
         </div>
-    </section>
+    </div>
 <?php $main = ob_get_clean();
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

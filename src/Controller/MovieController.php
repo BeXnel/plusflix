@@ -33,12 +33,22 @@ class MovieController
         return $html;
     }
 
+    public function adminAction(Templating $templating, Router $router): ?string
+    {
+        $movies = Movie::findAll();
+        $html = $templating->render('movie/admin_index.html.php', [
+            'movies' => $movies,
+            'router' => $router,
+        ]);
+        return $html;
+    }
+
     public function createAction(?array $requestPost, Templating $templating, Router $router): ?string
     {
         if ($requestPost) {
             $movie = Movie::fromArray($requestPost);
             $movie->save();
-            $path = $router->generatePath('movie-index');
+            $path = $router->generatePath('movie-admin');
             $router->redirect($path);
             return null;
         } else {
@@ -48,6 +58,8 @@ class MovieController
         $html = $templating->render('movie/create.html.php', [
             'movie' => $movie,
             'router' => $router,
+            'genres' => \App\Model\Genre::findAll(),
+            'platforms' => \App\Model\Platform::findAll(),
         ]);
         return $html;
     }
@@ -62,7 +74,7 @@ class MovieController
         if ($requestPost) {
             $movie->fill($requestPost);
             $movie->save();
-            $path = $router->generatePath('movie-index');
+            $path = $router->generatePath('movie-admin');
             $router->redirect($path);
             return null;
         }
@@ -70,6 +82,8 @@ class MovieController
         $html = $templating->render('movie/edit.html.php', [
             'movie' => $movie,
             'router' => $router,
+            'genres' => \App\Model\Genre::findAll(),
+            'platforms' => \App\Model\Platform::findAll(),
         ]);
         return $html;
     }
@@ -96,7 +110,7 @@ class MovieController
         }
 
         $movie->delete();
-        $path = $router->generatePath('movie-index');
+        $path = $router->generatePath('movie-admin');
         $router->redirect($path);
         return null;
     }

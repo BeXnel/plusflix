@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Exception\NotFoundException;
+
 use App\Service\Router;
 use App\Service\Templating;
 

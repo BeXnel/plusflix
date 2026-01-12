@@ -62,7 +62,7 @@ ob_start(); ?>
                 <?php foreach ($topMovies as $movie): ?>
                     <div class="movie-card">
                         <div class="rank-badge">
-                            <?php if($movie['rank'] == 1): ?>
+                            <?php if ($movie['rank'] == 1): ?>
                                 <span class="crown-icon">👑</span>
                             <?php endif; ?>
                             <span class="rank-number"><?= $movie['rank'] ?></span>
@@ -85,9 +85,5 @@ ob_start(); ?>
             </div>
         </section>
     </div>
-
-    <footer class="app-footer">
-        <p>&copy; 2026 PLUSFLIX</p>
-    </footer>
 <?php $main = ob_get_clean();
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';
