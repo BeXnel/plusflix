@@ -18,10 +18,7 @@ class Movie
      * @var Platform[] $availability
      */
     private array $availability = [];
-    /**
-     * @var Review[] $reviews
-     */
-    private array $reviews = [];
+
 
     public function getId(): ?int
     {
@@ -351,6 +348,12 @@ class Movie
         $sql = 'INSERT IGNORE INTO availability (movie_id, platform_id) VALUES (:movie_id, :platform_id)';
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $this->getId(), ':platform_id' => $platformId]);
+    }
+
+    public function addReview(Review $review): void
+    {
+        $review->setMovieId($this->getId());
+        $review->save();
     }
 
     /**
