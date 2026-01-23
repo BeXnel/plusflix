@@ -141,13 +141,13 @@ div {
 }
 .search-section .search-wrapper .search-input {
     border: none;
-    background: transparent;
+    background: 0 0;
     flex-grow: 1;
     font-size: 16px;
-    outline: none;
+    outline: 0;
 }
 .search-section .search-wrapper .filter-icon {
-    background: none;
+    background: 0 0;
     border: none;
     font-size: 20px;
     cursor: pointer;
@@ -172,6 +172,7 @@ div {
         justify-content: center;
         cursor: pointer;
         transition: all 0.3s ease;
+        z-index: 1;
         &:hover {
             background: @primary-color;
             border-color: @primary-color;
@@ -181,10 +182,13 @@ div {
             transform: scale(0.95);
         }
     }
+    .platforms-scroller {
+        overflow: hidden;
+        width: calc(5 * 64px + 4 * 1rem);
+    }
     .platforms-list {
         display: flex;
         gap: 1rem;
-        padding: 0.5rem;
     }
     .platform-badge {
         width: 64px;
