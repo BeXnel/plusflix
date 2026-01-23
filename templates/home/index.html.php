@@ -4,25 +4,11 @@
 $title = 'PLUSFLIX';
 $bodyClass = 'index';
 ob_start(); ?>
-    <header class="app-header">
-        <div class="header-container">
-            <div class="logo">
-                <span class="logo-plus">PLUS</span><span class="logo-flix">FLIX</span>
-            </div>
-            <button class="saved-btn" aria-label="Zapisane filmy">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                </svg>
-            </button>
-        </div>
-    </header>
-
     <div class="container">
         <section class="hero-section">
             <h1 class="hero-title">Znajdź swój następny film</h1>
             <p class="hero-subtitle">Przeglądaj tysiące filmów i seriali z Netflix, Disney+, HBO i innych platform w jednym miejscu</p>
         </section>
-
         <section class="platforms-section">
             <h2 class="section-title">Dostępne platformy</h2>
             <div class="platforms-wrapper">
@@ -55,7 +41,6 @@ ob_start(); ?>
                 </button>
             </div>
         </section>
-
         <section class="top-list-section">
             <h2 class="section-title">Najpopularniejsze filmy</h2>
             <div class="movies-list">

@@ -1,17 +1,12 @@
 <?php
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php';
-
 $config = new \App\Service\Config();
-
 $templating = new \App\Service\Templating();
 $router = new \App\Service\Router();
-
 $action = $_REQUEST['action'] ?? null;
-
 $actionData = getActionData($action);
 $actionModel = getActionModel($actionData);
 $actionType = getActionType($actionData);
-
 switch ($actionType) {
     case null:
         $controller = new \App\Controller\HomeController();
@@ -66,26 +61,22 @@ switch ($actionType) {
         }
         break;
     default:
-        $view = 'Not found';
+        $controller = new \App\Controller\HomeController();
+        $view = $controller->indexAction($templating, $router);
         break;
 }
-
 function getActionData(?string $action): array {
     if (! $action) {
         return [];
     }
-
     return explode('-', $action);
 }
-
 function getActionModel(array $actionData): ?string {
     return $actionData[0] ?? null;
 }
-
 function getActionType(array $actionData): ?string {
     return $actionData[1] ?? null;
 }
-
 function getController(string $actionModel): ?object {
     return match ($actionModel) {
         'movie' => new \App\Controller\MovieController(),
@@ -96,7 +87,6 @@ function getController(string $actionModel): ?object {
         default => null,
     };
 }
-
 if ($view) {
     echo $view;
 }
