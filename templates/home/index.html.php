@@ -1,10 +1,8 @@
 <?php
 /** @var \App\Model\Movie[] $topMovies */
 /** @var \App\Service\Router $router */
-
 $title = 'PLUSFLIX';
 $bodyClass = 'index';
-
 ob_start(); ?>
     <style>
         .platforms-list {
@@ -27,21 +25,21 @@ ob_start(); ?>
         </button>
         <div class="platforms-scroller">
             <div class="platforms-list">
-                <div class="platform-badge hbo" title="HBO Max">
+                <a href="https://www.hbomax.com/pl/pl" class="platform-badge hbo" title="HBO Max">
                     <span class="platform-logo">H</span>
-                </div>
-                <div class="platform-badge skyshowtime" title="SkyShowtime">
+                </a>
+                <a href="https://www.skyshowtime.com/pl" class="platform-badge skyshowtime" title="SkyShowtime">
                     <span class="platform-logo">S</span>
-                </div>
-                <div class="platform-badge prime" title="Prime Video">
+                </a>
+                <a href="https://www.primevideo.com/" class="platform-badge prime" title="Prime Video">
                     <span class="platform-logo">P</span>
-                </div>
-                <div class="platform-badge netflix" title="Netflix">
+                </a>
+                <a href="https://www.netflix.com/pl/" class="platform-badge netflix" title="Netflix">
                     <span class="platform-logo">N</span>
-                </div>
-                <div class="platform-badge disney" title="Disney+">
+                </a>
+                <a href="https://www.disneyplus.com/" class="platform-badge disney" title="Disney+">
                     <span class="platform-logo">D+</span>
-                </div>
+                </a>
             </div>
         </div>
         <button class="nav-arrow right" aria-label="Następne platformy">
@@ -55,7 +53,7 @@ ob_start(); ?>
             <h2 class="section-title">Najpopularniejsze filmy</h2>
             <div class="movies-list">
                 <?php foreach ($topMovies as $index => $movie): ?>
-                    <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>" class="movie-card">
+                    <div class="movie-card" onclick="window.location.href='<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>'">
                         <div class="rank-badge">
                             <?php if ($index == 0): ?>
                                 <span class="crown-icon">👑</span>
@@ -72,13 +70,21 @@ ob_start(); ?>
                             <?php foreach ($movie->getAvailability() as $platform):
                                 $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($platform->getName()));
                                 $display_text = ($clean_name === 'disney') ? 'D+' : strtoupper(substr($clean_name, 0, 1));
+                                $url = match($clean_name) {
+                                    'hbo' => 'https://www.hbomax.com/pl/pl',
+                                    'skyshowtime' => 'https://www.skyshowtime.com/pl',
+                                    'prime' => 'https://www.primevideo.com/',
+                                    'netflix' => 'https://www.netflix.com/pl/',
+                                    'disney' => 'https://www.disneyplus.com/',
+                                    default => '#',
+                                };
                             ?>
-                                <div class="platform-badge <?= htmlspecialchars($clean_name, ENT_QUOTES, 'UTF-8') ?>" title="<?= htmlspecialchars($platform->getName(), ENT_QUOTES, 'UTF-8') ?>">
+                                <a href="<?= $url ?>" onclick="event.stopPropagation()" class="platform-badge <?= htmlspecialchars($clean_name, ENT_QUOTES, 'UTF-8') ?>" title="<?= htmlspecialchars($platform->getName(), ENT_QUOTES, 'UTF-8') ?>">
                                     <span class="platform-logo"><?= htmlspecialchars($display_text, ENT_QUOTES, 'UTF-8') ?></span>
-                                </div>
+                                </a>
                             <?php endforeach; ?>
                         </div>
-                    </a>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </section>
@@ -89,12 +95,10 @@ ob_start(); ?>
             const list = document.querySelector('.platforms-list');
             const leftArrow = document.querySelector('.nav-arrow.left');
             const rightArrow = document.querySelector('.nav-arrow.right');
-
             if (leftArrow && rightArrow && list && wrapper) {
                 const itemWidth = list.querySelector('.platform-badge').offsetWidth;
                 const gap = parseInt(getComputedStyle(list).gap) || 0;
                 const step = itemWidth + gap;
-
                 function shiftLeft() {
                     list.style.transition = 'transform 0.3s ease-in-out';
                     list.style.transform = `translateX(${step}px)`;
@@ -107,7 +111,6 @@ ob_start(); ?>
                         list.style.transform = 'translateX(0)';
                     }, 300);
                 }
-
                 function shiftRight() {
                     list.style.transition = 'transform 0.3s ease-in-out';
                     list.style.transform = `translateX(-${step}px)`;
@@ -120,7 +123,6 @@ ob_start(); ?>
                         list.style.transform = 'translateX(0)';
                     }, 300);
                 }
-
                 leftArrow.addEventListener('click', shiftLeft);
                 rightArrow.addEventListener('click', shiftRight);
             }

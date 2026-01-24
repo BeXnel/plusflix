@@ -15,7 +15,7 @@ ob_start(); ?>
                 <div class="empty">Brak wyników wyszukiwania.</div>
             <?php else: ?>
                 <?php foreach ($movies as $movie): ?>
-                    <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>" class="movie-card">
+                    <div class="movie-card" onclick="window.location.href='<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>'">
                         <div class="movie-info">
                             <h3 class="movie-title">
                                     <?= $movie->getTitle() ?>
@@ -25,13 +25,22 @@ ob_start(); ?>
                         <div class="movie-platform">
                             <?php foreach ($movie->getAvailability() as $platform):
                                 $clean_name = preg_replace('/[^a-z0-9]/', '', strtolower($platform->getName()));
-                                $display_text = ($clean_name === 'disney') ? 'D+' : strtoupper(substr($clean_name, 0, 1)); ?>
-                                <div class="platform-badge <?= $clean_name ?>">
-                                    <span class="platform-logo"><?= $display_text ?></span>
-                                </div>
+                                $display_text = ($clean_name === 'disney') ? 'D+' : strtoupper(substr($clean_name, 0, 1));
+                                $url = match($clean_name) {
+                                    'hbo' => 'https://www.hbomax.com/pl/pl',
+                                    'skyshowtime' => 'https://www.skyshowtime.com/pl',
+                                    'prime' => 'https://www.primevideo.com/',
+                                    'netflix' => 'https://www.netflix.com/pl/',
+                                    'disney' => 'https://www.disneyplus.com/',
+                                    default => '#',
+                                };
+                            ?>
+                                <a href="<?= $url ?>" onclick="event.stopPropagation()" class="platform-badge <?= htmlspecialchars($clean_name, ENT_QUOTES, 'UTF-8') ?>" title="<?= htmlspecialchars($platform->getName(), ENT_QUOTES, 'UTF-8') ?>">
+                                    <span class="platform-logo"><?= htmlspecialchars($display_text, ENT_QUOTES, 'UTF-8') ?></span>
+                                </a>
                             <?php endforeach; ?>
                         </div>
-                    </a>
+                    </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
