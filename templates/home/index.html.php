@@ -55,7 +55,7 @@ ob_start(); ?>
             <h2 class="section-title">Najpopularniejsze filmy</h2>
             <div class="movies-list">
                 <?php foreach ($topMovies as $index => $movie): ?>
-                    <div class="movie-card">
+                    <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>" class="movie-card">
                         <div class="rank-badge">
                             <?php if ($index == 0): ?>
                                 <span class="crown-icon">👑</span>
@@ -64,9 +64,7 @@ ob_start(); ?>
                         </div>
                         <div class="movie-info">
                             <h3 class="movie-title">
-                                <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>">
                                     <?= htmlspecialchars($movie->getTitle(), ENT_QUOTES, 'UTF-8') ?>
-                                </a>
                             </h3>
                             <p class="movie-year"><?= htmlspecialchars((string) $movie->getYear(), ENT_QUOTES, 'UTF-8') ?></p>
                         </div>
@@ -80,7 +78,7 @@ ob_start(); ?>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </section>
