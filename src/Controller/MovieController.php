@@ -2,6 +2,7 @@
 namespace App\Controller;
 use App\Exception\NotFoundException;
 use App\Model\Movie;
+use App\Model\Review;
 use App\Service\Router;
 use App\Service\Templating;
 class MovieController
@@ -89,5 +90,30 @@ class MovieController
         $path = $router->generatePath('movie-admin');
         $router->redirect($path);
         return null;
+    }
+
+    public function addReviewAction(int $movieId, ?array $requestPost, Templating $templating, Router $router): ?string
+    {
+        $movie = Movie::find($movieId);
+        if (! $movie) {
+            throw new NotFoundException("Missing movie with id $movieId");
+        }
+
+        if ($requestPost) {
+            if (isset($requestPost['comment'])) {
+                $requestPost['comment'] = htmlspecialchars($requestPost['comment'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            }
+            $review = Review::fromArray($requestPost);
+            $movie->addReview($review);
+            $path = $router->generatePath('movie-show', ['id' => $movieId]);
+            $router->redirect($path);
+            return null;
+        }
+
+        $html = $templating->render('movie/show.html.php', [
+            'movie' => $movie,
+            'router' => $router,
+        ]);
+        return $html;
     }
 }
