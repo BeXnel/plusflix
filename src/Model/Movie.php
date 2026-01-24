@@ -131,9 +131,60 @@ class Movie
      */
     public static function findAll(): array
     {
+        return self::findByCriteria();
+    }
+
+    public static function findByCriteria(string $q = '', array $genreIds = [], array $platformIds = []): array
+    {
         $pdo = Database::getPDO();
-        $sql = 'SELECT * FROM movies';
+        $sql = 'SELECT DISTINCT m.* FROM movies m';
+        $joins = [];
+        $where = [];
+        $params = [];
+        if (!empty($genreIds)) {
+            $joins[] = 'JOIN movie_genres mg ON m.id = mg.movie_id';
+            $genrePlaceholders = implode(',', array_fill(0, count($genreIds), '?'));
+            $where[] = "mg.genre_id IN ($genrePlaceholders)";
+            $params = array_merge($params, $genreIds);
+        }
+        if (!empty($platformIds)) {
+            $joins[] = 'JOIN availability a ON m.id = a.movie_id';
+            $platformPlaceholders = implode(',', array_fill(0, count($platformIds), '?'));
+            $where[] = "a.platform_id IN ($platformPlaceholders)";
+            $params = array_merge($params, $platformIds);
+        }
+        if ($q) {
+            $escapedQ = self::escapeLikeSpecialChars($q);
+            $like = '%' . $escapedQ . '%';
+            $where[] = '(m.title LIKE ? OR m.director LIKE ? OR m.description LIKE ?)';
+            $params = array_merge($params, [$like, $like, $like]);
+        }
+        if (!empty($joins)) {
+            $sql .= ' ' . implode(' ', $joins);
+        }
+        if (!empty($where)) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
         $statement = $pdo->prepare($sql);
+        $statement->execute($params);
+        $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        if (empty($moviesArray)) {
+            return [];
+        }
+        return self::buildMoviesWithRelations($moviesArray);
+    }
+
+    public static function findTopByRating(int $limit = 3): array
+    {
+        $pdo = Database::getPDO();
+        $sql = 'SELECT m.*, AVG(r.rating) as avg_rating
+                FROM movies m
+                LEFT JOIN reviews r ON m.id = r.movie_id
+                GROUP BY m.id
+                ORDER BY avg_rating DESC, m.title ASC
+                LIMIT :limit';
+        $statement = $pdo->prepare($sql);
+        $statement->bindParam(':limit', $limit, \PDO::PARAM_INT);
         $statement->execute();
         $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
         if (empty($moviesArray)) {
@@ -209,23 +260,6 @@ class Movie
             return null;
         }
         return $movies[0];
-    }
-
-    public static function search(string $searchTerm): array
-    {
-        $pdo = Database::getPDO();
-        $sql = 'SELECT * FROM movies
-                WHERE title LIKE :searchTerm ESCAPE \'!\'
-                   OR director LIKE :searchTerm ESCAPE \'!\'
-                   OR description LIKE :searchTerm ESCAPE \'!\'';
-        $statement = $pdo->prepare($sql);
-        $escapedSearchTerm = self::escapeLikeSpecialChars($searchTerm);
-        $statement->execute(['searchTerm' => '%' . $escapedSearchTerm . '%']);
-        $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        if (empty($moviesArray)) {
-            return [];
-        }
-        return self::buildMoviesWithRelations($moviesArray);
     }
 
     private static function escapeLikeSpecialChars(string $term): string
