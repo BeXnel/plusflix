@@ -15,12 +15,10 @@ ob_start(); ?>
                 <div class="empty">Brak wyników wyszukiwania.</div>
             <?php else: ?>
                 <?php foreach ($movies as $movie): ?>
-                    <div class="movie-card">
+                    <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>" class="movie-card">
                         <div class="movie-info">
                             <h3 class="movie-title">
-                                <a href="<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>">
                                     <?= $movie->getTitle() ?>
-                                </a>
                             </h3>
                             <p class="movie-year"><?= $movie->getYear() ?></p>
                         </div>
@@ -33,7 +31,7 @@ ob_start(); ?>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>

@@ -247,19 +247,28 @@ div {
         gap: 1rem;
     }
     .movie-card {
+        display: flex;
         background: @card-bg;
         border: 1px solid @border-color;
         border-radius: 16px;
         padding: 1.25rem 1.5rem;
-        display: flex;
         align-items: center;
         gap: 1.25rem;
         transition: all 0.3s ease;
         cursor: pointer;
+        text-decoration: none;
+        color: inherit;
         &:hover {
             border-color: @primary-color;
             transform: translateX(8px);
             box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+            color: inherit;
+        }
+        &:hover .movie-title {
+            color: @text-primary;
+        }
+        &:hover .movie-year {
+            color: @text-secondary;
         }
         .rank-badge {
             position: relative;
