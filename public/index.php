@@ -84,6 +84,7 @@ function getController(string $actionModel): ?object {
         'platform' => new \App\Controller\PlatformController(),
         'home' => new \App\Controller\HomeController(),
         'admin' => new \App\Controller\AdminController(),
+        'login' => new \App\Controller\AdminLogInController(),
         default => null,
     };
 }

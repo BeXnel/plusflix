@@ -10,6 +10,12 @@ class PlatformController
 {
     public function indexAction(Templating $templating, Router $router): ?string
     {
+        if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
+            $html = $templating->render('admin/login.html.php', [
+                'router' => $router,
+            ]);
+            return $html;
+        }
         $platforms = Platform::findAll();
         $html = $templating->render('platform/index.html.php', [
             'platforms' => $platforms,

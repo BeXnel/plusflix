@@ -11,6 +11,12 @@ class GenreController
     public function indexAction(Templating $templating, Router $router): ?string
     {
         $genres = Genre::findAll();
+        if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
+            $html = $templating->render('admin/login.html.php', [
+                'router' => $router,
+            ]);
+            return $html;
+        }
         $html = $templating->render('genre/index.html.php', [
             'genres' => $genres,
             'router' => $router,

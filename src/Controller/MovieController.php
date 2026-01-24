@@ -20,6 +20,12 @@ class MovieController
     }
     public function adminAction(Templating $templating, Router $router): ?string
     {
+        if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
+            $html = $templating->render('admin/login.html.php', [
+                'router' => $router,
+            ]);
+            return $html;
+        }
         $movies = Movie::findAll();
         $html = $templating->render('movie/admin_index.html.php', [
             'movies' => $movies,
@@ -38,6 +44,7 @@ class MovieController
         } else {
             $movie = new Movie();
         }
+
         $html = $templating->render('movie/create.html.php', [
             'movie' => $movie,
             'router' => $router,
