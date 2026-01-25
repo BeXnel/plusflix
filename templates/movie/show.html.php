@@ -38,7 +38,7 @@ ob_start();
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
             <h3 class="section-title" style="text-align:left; color:#ffffff; margin:0;">Recenzje</h3>
             <button id="openReviewModal" style="background:#6366f1; color:#ffffff; border:none; padding:0.75rem 1.5rem; border-radius:8px; cursor:pointer; font-weight:500; font-family:'Poppins', sans-serif; font-size:0.95rem; transition:background 0.3s ease;" onmouseover="this.style.background='#4f46e5'" onmouseout="this.style.background='#6366f1';">
-                Wystawić recenzję
+                Dodaj ocenę
             </button>
         </div>
         <?php if ($movie->getAverageRating()): ?>
@@ -70,10 +70,10 @@ ob_start();
                 <h3 style="color:#ffffff; margin:0; font-size:1.5rem;">Wystawić recenzję</h3>
                 <button id="closeReviewModal" type="button" style="background:none; border:none; color:#a0a0b0; font-size:1.5rem; cursor:pointer;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#a0a0b0';">×</button>
             </div>
-            
+
             <form id="reviewForm" method="POST" action="<?= $router->generatePath('movie-addReview', ['id' => $movie->getId()]) ?>" style="display:none;">
                 <input type="hidden" name="action" value="movie-addReview">
-                <input type="hidden" name="id" value="<?= $movie->getId() ?>">
+                <input type="hidden" name="movie_id" value="<?= $movie->getId() ?>">
                 <input type="hidden" name="rating" id="formRating" value="">
                 <input type="hidden" name="comment" id="formComment" value="">
             </form>

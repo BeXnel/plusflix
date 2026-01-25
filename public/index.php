@@ -64,6 +64,9 @@ switch ($actionType) {
         if (! $_REQUEST['id']) {
             break;
         }
+        /**
+         * @var \App\Controller\MovieController $controller
+         */
         $controller = getController($actionModel);
         if (method_exists($controller, 'addReviewAction')) {
             $view = $controller->addReviewAction($_REQUEST['id'], $_REQUEST, $templating, $router);

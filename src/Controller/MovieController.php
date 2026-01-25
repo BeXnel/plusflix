@@ -110,6 +110,7 @@ class MovieController
             if (isset($requestPost['comment'])) {
                 $requestPost['comment'] = htmlspecialchars($requestPost['comment'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             }
+            unset($requestPost['id']);
             $review = Review::fromArray($requestPost);
             $movie->addReview($review);
             $path = $router->generatePath('movie-show', ['id' => $movieId]);

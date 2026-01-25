@@ -76,7 +76,7 @@ class Review
             $this->setMovieId($array['movie_id']);
         }
         if (isset($array['rating'])) {
-            $this->setRating($array['rating']);
+            $this->setRating((int) $array['rating']);
         }
         if (isset($array['comment'])) {
             $this->setComment($array['comment']);
