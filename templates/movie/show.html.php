@@ -13,92 +13,164 @@ ob_start();
 }
 
 .show .movie-detail-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
 }
 
-.show .movie-header {
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(165, 180, 252, 0.1);
+.show .movie-hero {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.show .movie-banner {
+    width: 100%;
+    height: 450px;
+    background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563;
+    font-size: 3rem;
+    font-weight: 200;
+    letter-spacing: 0.1em;
+    border: 2px dashed #3a3a4e;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
 }
 
-.show .movie-header::before {
+.show .movie-banner::before {
     content: '';
     position: absolute;
     top: -50%;
     right: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
     pointer-events: none;
 }
 
+.show .movie-banner-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.show .movie-info-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.show .movie-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.show .movie-title-section {
+    flex: 1;
+}
+
 .show .movie-title {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     font-weight: 700;
     color: #ffffff;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 0.5rem 0;
     letter-spacing: -0.02em;
-    position: relative;
+    line-height: 1.1;
 }
 
-.show .movie-year {
-    color: #6366f1;
-    font-weight: 400;
-    font-size: 2rem;
+.show .movie-rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    color: #0f0f23;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+    white-space: nowrap;
 }
 
-.show .movie-info-grid {
+.show .add-review-btn {
+    background: #6366f1;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: background 0.3s ease;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+.show .add-review-btn:hover {
+    background: #4f46e5;
+}
+
+.show .movie-meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
     margin-bottom: 2rem;
-    position: relative;
 }
 
-.show .info-card {
-    background: rgba(22, 22, 42, 0.6);
-    border: 1px solid #2a2a3e;
-    border-radius: 16px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
+.show .meta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
 }
 
-.show .info-card:hover {
-    border-color: #6366f1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
-}
-
-.show .info-label {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+.show .meta-label {
+    font-size: 0.9rem;
     color: #6366f1;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 100px;
 }
 
-.show .info-value {
+.show .meta-value {
     font-size: 1.1rem;
     color: #ffffff;
-    line-height: 1.6;
+    font-weight: 400;
 }
 
+/* Pozostałe sekcje */
 .show .description-card {
     background: linear-gradient(135deg, rgba(22, 22, 42, 0.8) 0%, rgba(26, 26, 46, 0.6) 100%);
     border: 1px solid #2a2a3e;
     border-radius: 16px;
     padding: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     line-height: 1.8;
+}
+
+.show .section-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6366f1;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.show .description-text {
+    font-size: 1.05rem;
+    color: #e0e0e0;
+    line-height: 1.7;
 }
 
 .show .genres-section,
@@ -132,23 +204,6 @@ ob_start();
     height: 3px;
     background: linear-gradient(90deg, #6366f1, transparent);
     border-radius: 2px;
-}
-
-.show .add-review-btn {
-    background: #6366f1;
-    color: #ffffff;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    transition: background 0.3s ease;
-}
-
-.show .add-review-btn:hover {
-    background: #4f46e5;
 }
 
 .show .platforms-grid {
@@ -220,18 +275,6 @@ ob_start();
     background: linear-gradient(135deg, #0056d6, #003d99);
 }
 
-.show .rating-summary {
-    background: linear-gradient(135deg, #6366f1, #818cf8);
-    color: #0f0f23;
-    padding: 1.5rem 2rem;
-    border-radius: 16px;
-    margin-bottom: 2rem;
-    display: inline-block;
-    font-weight: 600;
-    font-size: 1.25rem;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
-}
-
 .show .reviews-container {
     display: grid;
     gap: 1.5rem;
@@ -269,22 +312,11 @@ ob_start();
     opacity: 1;
 }
 
-.show .review-rating {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(99, 102, 241, 0.15);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    color: #6366f1;
-    margin-bottom: 1rem;
-}
-
 .show .review-stars {
     display: flex;
     gap: 0.25rem;
     font-size: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 .show .review-stars .star-filled {
@@ -296,7 +328,7 @@ ob_start();
 }
 
 .show .review-comment {
-    color: #ffffff;
+    color: #e0e0e0;
     line-height: 1.7;
     margin: 0;
 }
@@ -353,25 +385,46 @@ ob_start();
     font-style: italic;
 }
 
-@media (max-width: 768px) {
-    .show .movie-detail-container {
-        padding: 1.5rem 1rem;
+@media (max-width: 968px) {
+    .show .movie-hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
-    .show .movie-header {
-        padding: 1.5rem;
+    .show .movie-banner {
+        height: 400px;
+    }
+
+    .show .movie-header-top {
+        flex-direction: column;
+        gap: 1rem;
     }
 
     .show .movie-title {
         font-size: 2rem;
     }
-    
-    .show .movie-year {
-        font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .show .movie-detail-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .show .movie-banner {
+        height: 350px;
+    }
+
+    .show .movie-title {
+        font-size: 1.75rem;
     }
     
-    .show .movie-info-grid {
-        grid-template-columns: 1fr;
+    .show .meta-label {
+        min-width: 80px;
+        font-size: 0.85rem;
+    }
+    
+    .show .meta-value {
+        font-size: 1rem;
     }
     
     .show .section-header {
@@ -390,32 +443,56 @@ ob_start();
 </style>
 
 <div class="movie-detail-container">
-    <div class="movie-header">
-        <h1 class="movie-title">
-            <?= htmlspecialchars($movie->getTitle(), ENT_QUOTES, 'UTF-8') ?>
-            <span class="movie-year">(<?= $movie->getYear() ?>)</span>
-        </h1>
-        
-        <div class="movie-info-grid">
-            <div class="info-card">
-                <div class="info-label">Reżyser</div>
-                <div class="info-value"><?= htmlspecialchars($movie->getDirector(), ENT_QUOTES, 'UTF-8') ?></div>
+    <div class="movie-hero">
+        <!-- banner placeholder -->
+        <div class="movie-banner">
+            <div class="movie-banner-text">BANNER<br>FILMU</div>
+        </div>
+
+        <div class="movie-info-main">
+            <div>
+                <div class="movie-header-top">
+                    <div class="movie-title-section">
+                        <h1 class="movie-title"><?= htmlspecialchars($movie->getTitle(), ENT_QUOTES, 'UTF-8') ?></h1>
+                    </div>
+                    <?php if ($movie->getAverageRating()): ?>
+                        <div class="movie-rating-badge">
+                            ⭐ <?= number_format($movie->getAverageRating(), 1) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="movie-meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Rok</span>
+                        <span class="meta-value"><?= $movie->getYear() ?></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Reżyser</span>
+                        <span class="meta-value"><?= htmlspecialchars($movie->getDirector(), ENT_QUOTES, 'UTF-8') ?></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Czas trwania</span>
+                        <span class="meta-value"><?= $movie->getDuration() ?> min</span>
+                    </div>
+                </div>
             </div>
-            
-            <div class="info-card">
-                <div class="info-label">Długość</div>
-                <div class="info-value"><?= $movie->getDuration() ?> minut</div>
+
+            <div>
+                <button id="openReviewModal" class="add-review-btn">
+                    Dodaj ocenę
+                </button>
             </div>
         </div>
     </div>
 
     <div class="description-card">
-        <div class="info-label">Opis</div>
-        <div class="info-value"><?= htmlspecialchars($movie->getDescription(), ENT_QUOTES, 'UTF-8') ?></div>
+        <span class="section-label">Opis</span>
+        <p class="description-text"><?= htmlspecialchars($movie->getDescription(), ENT_QUOTES, 'UTF-8') ?></p>
     </div>
 
     <div class="genres-section">
-        <div class="info-label">Gatunki</div>
+        <span class="section-label">Gatunki</span>
         <div class="genre-tags">
             <?php foreach ($movie->getGenres() as $genre): ?>
                 <span class="genre-tag"><?= htmlspecialchars($genre->getName(), ENT_QUOTES, 'UTF-8') ?></span>
@@ -450,19 +527,11 @@ ob_start();
         </div>
     </div>
 
+    <!-- Reviews -->
     <div class="reviews-section">
         <div class="section-header">
             <h3 class="section-title">Recenzje użytkowników</h3>
-            <button id="openReviewModal" class="add-review-btn">
-                Dodaj ocenę
-            </button>
         </div>
-        
-        <?php if ($movie->getAverageRating()): ?>
-            <div class="rating-summary">
-                ⭐ Średnia ocena: <?= number_format($movie->getAverageRating(), 1) ?> / 5
-            </div>
-        <?php endif; ?>
         
         <?php if (count($movie->getReviews()) > 0): ?>
             <div class="reviews-container">
@@ -560,12 +629,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const commentInput = document.getElementById('reviewComment');
     let selectedRating = 0;
 
-    // Open modal
     openBtn.addEventListener('click', function() {
         modal.style.display = 'flex';
     });
 
-    // Close modal
     closeBtn.addEventListener('click', function() {
         modal.style.display = 'none';
         resetForm();
@@ -576,7 +643,6 @@ document.addEventListener('DOMContentLoaded', function() {
         resetForm();
     });
 
-    // Close modal when clicking outside
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             modal.style.display = 'none';
@@ -584,7 +650,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Star rating
     stars.forEach(star => {
         star.addEventListener('mouseover', function() {
             const rating = parseInt(this.dataset.rating);
@@ -613,7 +678,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Submit review
     submitBtn.addEventListener('click', function() {
         if (selectedRating === 0) {
             alert('Proszę wybrać ocenę');
