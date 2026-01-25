@@ -50,7 +50,7 @@ ob_start(); ?>
     </div>
 </section>
         <section class="top-list-section">
-            <h2 class="section-title">Najpopularniejsze filmy</h2>
+            <h2 class="section-title">Topowe filmy</h2>
             <div class="movies-list">
                 <?php foreach ($topMovies as $index => $movie): ?>
                     <div class="movie-card" onclick="window.location.href='<?= $router->generatePath('movie-show', ['id' => $movie->getId()]) ?>'">
