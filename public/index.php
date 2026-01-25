@@ -60,6 +60,15 @@ switch ($actionType) {
             }
         }
         break;
+    case 'addReview':
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = getController($actionModel);
+        if (method_exists($controller, 'addReviewAction')) {
+            $view = $controller->addReviewAction($_REQUEST['id'], $_REQUEST, $templating, $router);
+        }
+        break;
     default:
         $controller = new \App\Controller\HomeController();
         $view = $controller->indexAction($templating, $router);
@@ -85,6 +94,7 @@ function getController(string $actionModel): ?object {
         'home' => new \App\Controller\HomeController(),
         'admin' => new \App\Controller\AdminController(),
         'login' => new \App\Controller\AdminLogInController(),
+        'review' => new \App\Controller\ReviewController(),
         default => null,
     };
 }
