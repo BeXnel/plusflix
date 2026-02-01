@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="/assets/dist/<?= isset($_SESSION['theme']) && $_SESSION['theme'] === 'alt' ? 'contrast.min.css' : 'style.min.css' ?>">
     <title><?= $title ?? 'Plusflix' ?></title>
     <style>
-        .app-header {
-            cursor: pointer;
-        }
         .app-header .search-pill,
         .app-header .saved-btn {
             cursor: default;
@@ -63,7 +60,7 @@ $selectedPlatforms = $_GET['platform'] ?? [];
                 Wysoki Kontrast
             </label>
         </div>
-        <button class="saved-btn" aria-label="Zapisane filmy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+        <a class="saved-btn" href="<?= $router->generatePath('movie-favorites') ?>" aria-label="Ulubione filmy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></a>
     </div>
 </header>
 <main><?= $main ?? null ?></main>
@@ -71,26 +68,9 @@ $selectedPlatforms = $_GET['platform'] ?? [];
 <script>
     document.getElementById('filter-btn').addEventListener('click', function(e) {
         e.stopPropagation();
-        document.getElementById('filters').classList.toggle('show');
-    });
-    document.querySelector('.app-header').addEventListener('click', function(e) {
-        if (e.target.closest('.search-pill, .saved-btn, button, input, .icon-btn, #filters')) {
-            return;
-        }
-        window.location.href = '<?= $router->generatePath('') ?>';
+        document.getElementById('filters').classList.toggle('active');
     });
 
-    // document.querySelectorAll('input[name="modes"]').forEach(checkbox => {
-    //     checkbox.addEventListener('change', (e) => {
-    //         const link = document.querySelector('link[rel="stylesheet"]');
-    //         if(e.target.checked){
-    //             link.href = '/assets/dist/contrast.min.css';
-    //         }
-    //         else{
-    //             link.href = '/assets/dist/style.min.css';
-    //         }
-    //     });
-    // });
     document.addEventListener('DOMContentLoaded', () => {
         const link = document.querySelector('link[rel="stylesheet"]');
         const checkbox = document.querySelector('input[name="modes"]');
