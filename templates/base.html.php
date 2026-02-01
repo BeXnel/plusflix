@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preload" href="/assets/dist/style.min.css" as="style">
     <link rel="stylesheet" href="/assets/dist/style.min.css">
     <title><?= $title ?? 'Plusflix' ?></title>
     <style>
@@ -14,7 +15,6 @@
         .app-header .saved-btn {
             cursor: default;
         }
-
         label {
             color: #eee;
         }
@@ -56,18 +56,16 @@ $selectedPlatforms = $_GET['platform'] ?? [];
                 <button type="submit">Zastosuj filtry</button>
             </div>
         </form>
-        <button class="saved-btn" aria-label="Zapisane filmy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+        <a class="saved-btn" href="<?= $router->generatePath('movie-favorites') ?>" aria-label="Ulubione filmy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></a>
     </div>
 </header>
 <main><?= $main ?? null ?></main>
 <footer class="app-footer"><p>© <?= date('Y') ?> PLUSFLIX</p></footer>
-
 <script>
     document.getElementById('filter-btn').addEventListener('click', function(e) {
         e.stopPropagation();
         document.getElementById('filters').classList.toggle('show');
     });
-
     document.querySelector('.app-header').addEventListener('click', function(e) {
         if (e.target.closest('.search-pill, .saved-btn, button, input, .icon-btn, #filters')) {
             return;

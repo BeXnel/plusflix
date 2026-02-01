@@ -19,7 +19,7 @@ class MovieController
                 $limit = $candidateLimit;
             }
         }
-        $movies = Movie::findByCriteria($q, $genreIds, $platformIds, $limit);
+        $movies = Movie::findByCriteria($q, $genreIds, $platformIds, null, $limit);
         $html = $templating->render('movie/index.html.php', [
             'movies' => $movies,
             'router' => $router,
@@ -52,7 +52,6 @@ class MovieController
         } else {
             $movie = new Movie();
         }
-
         $html = $templating->render('movie/create.html.php', [
             'movie' => $movie,
             'router' => $router,
@@ -105,14 +104,12 @@ class MovieController
         $router->redirect($path);
         return null;
     }
-
     public function addReviewAction(int $movieId, ?array $requestPost, Templating $templating, Router $router): ?string
     {
         $movie = Movie::find($movieId);
         if (! $movie) {
             throw new NotFoundException("Missing movie with id $movieId");
         }
-
         if ($requestPost) {
             if (isset($requestPost['comment'])) {
                 $requestPost['comment'] = htmlspecialchars($requestPost['comment'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -124,11 +121,46 @@ class MovieController
             $router->redirect($path);
             return null;
         }
-
         $html = $templating->render('movie/show.html.php', [
             'movie' => $movie,
             'router' => $router,
         ]);
         return $html;
+    }
+    public function favoritesAction(Templating $templating, Router $router): ?string
+    {
+        $favoriteIds = $_SESSION['favorites'] ?? [];
+        $movies = Movie::findByCriteria('', [], [], $favoriteIds);
+        $html = $templating->render('movie/favorites.html.php', [
+            'movies' => $movies,
+            'router' => $router,
+        ]);
+        return $html;
+    }
+    public function toggleFavoriteAction(int $movieId, Router $router): void
+    {
+        if (!isset($_SESSION['favorites'])) {
+            $_SESSION['favorites'] = [];
+        }
+        $key = array_search($movieId, $_SESSION['favorites']);
+        $isFavorite = false;
+        if ($key !== false) {
+            unset($_SESSION['favorites'][$key]);
+        } else {
+            $_SESSION['favorites'][] = $movieId;
+            $isFavorite = true;
+        }
+        if (isset($_REQUEST['ajax'])) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'isFavorite' => $isFavorite,
+                'buttonText' => $isFavorite ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'
+            ]);
+            exit;
+        } else {
+            $referer = $_SERVER['HTTP_REFERER'] ?? $router->generatePath('movie-show', ['id' => $movieId]);
+            $router->redirect($referer);
+        }
     }
 }

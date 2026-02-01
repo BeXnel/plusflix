@@ -1,7 +1,6 @@
 <?php
 namespace App\Model;
 use App\Service\Database;
-
 class Movie
 {
     private ?int $id = null;
@@ -18,81 +17,66 @@ class Movie
      * @var Platform[] $availability
      */
     private array $availability = [];
-
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function setId(?int $id): Movie
     {
         $this->id = $id;
         return $this;
     }
-
     public function getTitle(): ?string
     {
         return $this->title;
     }
-
     public function setTitle(?string $title): Movie
     {
         $this->title = $title;
         return $this;
     }
-
     public function getYear(): ?int
     {
         return $this->year;
     }
-
     public function setYear(?int $year): Movie
     {
         $this->year = $year;
         return $this;
     }
-
     public function getDirector(): ?string
     {
         return $this->director;
     }
-
     public function setDirector(?string $director): Movie
     {
         $this->director = $director;
         return $this;
     }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
     public function setDescription(?string $description): Movie
     {
         $this->description = $description;
         return $this;
     }
-
     public function getDuration(): ?float
     {
         return $this->duration;
     }
-
     public function setDuration(?float $duration): Movie
     {
         $this->duration = $duration;
         return $this;
     }
-
     public static function fromArray($array): Movie
     {
         $movie = new self();
         $movie->fill($array);
         return $movie;
     }
-
     public function fill($array): Movie
     {
         if (isset($array['id']) && ! $this->getId()) {
@@ -125,16 +109,11 @@ class Movie
         }
         return $this;
     }
-
-    /**
-     * @return Movie[]
-     */
     public static function findAll(): array
     {
         return self::findByCriteria();
     }
-
-    public static function findByCriteria(string $q = '', array $genreIds = [], array $platformIds = [], int $limit = 10): array
+    public static function findByCriteria(string $q = '', array $genreIds = [], array $platformIds = [], ?array $movieIds = null, int $limit = 10): array
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT DISTINCT m.* FROM movies m';
@@ -169,6 +148,18 @@ class Movie
             $params[':search_director'] = $like;
             $params[':search_description'] = $like;
         }
+        if ($movieIds !== null) {
+            if (empty($movieIds)) {
+                return [];
+            }
+            $placeholders = [];
+            foreach ($movieIds as $index => $movieId) {
+                $placeholder = ':movieId_' . $index;
+                $placeholders[] = $placeholder;
+                $params[$placeholder] = $movieId;
+            }
+            $where[] = "m.id IN (" . implode(',', $placeholders) . ")";
+        }
         if (!empty($joins)) {
             $sql .= ' ' . implode(' ', $joins);
         }
@@ -186,7 +177,6 @@ class Movie
         }
         return self::buildMoviesWithRelations($moviesArray);
     }
-
     public static function findTopByRating(int $limit = 3): array
     {
         $pdo = Database::getPDO();
@@ -205,7 +195,6 @@ class Movie
         }
         return self::buildMoviesWithRelations($moviesArray);
     }
-
     private static function buildMoviesWithRelations(array $moviesArray): array
     {
         $movieIds = array_column($moviesArray, 'id');
@@ -219,7 +208,6 @@ class Movie
         }
         return $movies;
     }
-
     private static function getGenresByMovie(array $movieIds): array
     {
         $pdo = Database::getPDO();
@@ -238,7 +226,6 @@ class Movie
         }
         return $genresByMovie;
     }
-
     private static function getPlatformsByMovie(array $movieIds): array
     {
         $pdo = Database::getPDO();
@@ -257,7 +244,6 @@ class Movie
         }
         return $platformsByMovie;
     }
-
     public static function find($id): ?Movie
     {
         $pdo = Database::getPDO();
@@ -274,12 +260,10 @@ class Movie
         }
         return $movies[0];
     }
-
     private static function escapeLikeSpecialChars(string $term): string
     {
         return str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term);
     }
-
     public function save(): void
     {
         $pdo = Database::getPDO();
@@ -309,7 +293,6 @@ class Movie
         $this->saveGenres();
         $this->saveAvailability();
     }
-
     private function saveGenres(): void
     {
         $this->clearGenres();
@@ -317,7 +300,6 @@ class Movie
             $this->addGenre($genre->getId());
         }
     }
-
     private function clearGenres(): void
     {
         $pdo = Database::getPDO();
@@ -325,7 +307,6 @@ class Movie
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $this->getId()]);
     }
-
     private function saveAvailability(): void
     {
         $this->clearAvailability();
@@ -333,7 +314,6 @@ class Movie
             $this->addAvailability($platform->getId());
         }
     }
-
     private function clearAvailability(): void
     {
         $pdo = Database::getPDO();
@@ -341,7 +321,6 @@ class Movie
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $this->getId()]);
     }
-
     public function delete(): void
     {
         $pdo = Database::getPDO();
@@ -359,18 +338,15 @@ class Movie
         $this->setGenres([]);
         $this->setAvailability([]);
     }
-
     public function getGenres(): array
     {
         return $this->genres;
     }
-
     public function setGenres(array $genres): Movie
     {
         $this->genres = $genres;
         return $this;
     }
-
     public function addGenre(int $genreId): void
     {
         $pdo = Database::getPDO();
@@ -378,17 +354,14 @@ class Movie
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $this->getId(), ':genre_id' => $genreId]);
     }
-
     public function getAvailability(): array {
         return $this->availability;
     }
-
     public function setAvailability(array $platforms): Movie
     {
         $this->availability = $platforms;
         return $this;
     }
-
     public function addAvailability(int $platformId): void
     {
         $pdo = Database::getPDO();
@@ -396,21 +369,15 @@ class Movie
         $statement = $pdo->prepare($sql);
         $statement->execute([':movie_id' => $this->getId(), ':platform_id' => $platformId]);
     }
-
     public function addReview(Review $review): void
     {
         $review->setMovieId($this->getId());
         $review->save();
     }
-
-    /**
-     * @return Review[]
-     */
     public function getReviews(): array
     {
         return Review::findByMovieId($this->getId());
     }
-
     public function getAverageRating(): ?float
     {
         $pdo = Database::getPDO();
