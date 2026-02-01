@@ -181,11 +181,6 @@ body {
   line-height: 24px;
   color: #484848;
 }
-@media (min-width: 1024px) {
-  body {
-    background: url('https://cdn.pixabay.com/photo/2018/01/26/20/24/pattern-3109720_960_720.jpg');
-  }
-}
 body main,
 body nav,
 body footer {
@@ -240,7 +235,7 @@ body ul.action-list li {
   margin-right: 1em;
 }
 .app-header {
-  background: linear-gradient(135deg, #0f0f23 0, #1a1a2e 100%);
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
   border-bottom: 1px solid #2a2a3e;
   padding: 1.5rem 0;
   position: sticky;
@@ -411,6 +406,35 @@ body ul.action-list li {
 }
 .filters button[type="submit"]:hover {
   background: #4f46e5;
+}
+@media (max-width: 768px) {
+  .app-header {
+    padding: 1rem 0;
+  }
+  .app-header .header-container {
+    padding: 0 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .app-header .search-pill {
+    max-width: none;
+    height: 40px;
+  }
+  .app-header .search-input {
+    font-size: 14px;
+  }
+  .app-header .icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .app-header .saved-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .app-header .logo {
+    font-size: 1.5rem;
+  }
 }
 footer {
   font-size: 0.8rem;
@@ -2300,7 +2324,6 @@ main {
 /*# sourceMappingURL=contrast.css.map */
 .show {
   background: linear-gradient(180deg, #020413 0%, #020413 100%);
-  min-height: 100vh;
 }
 .show .movie-detail-container {
   max-width: 1200px;
