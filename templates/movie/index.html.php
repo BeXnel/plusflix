@@ -14,7 +14,7 @@ ob_start(); ?>
     <div class="list-controls" style="display:flex; gap:15px; align-items:center;">
             <label for="limit-select" style="color:#a0a0b0; font-size:0.9rem;">Wyników na stronę:</label>
             <select id="limit-select" onchange="changeLimit(this.value)" style="padding: 8px 12px; background:#1b1b2f; color:white; border:1px solid #2a2a3e; border-radius:8px; cursor:pointer;">
-                <?php foreach ([10, 20, 50] as $opt): ?>
+                <?php foreach ([5, 15, 25] as $opt): ?>
                     <option value="<?= $opt ?>" <?= ($currentLimit == $opt) ? 'selected' : '' ?>>
                         <?= $opt ?>
                     </option>
