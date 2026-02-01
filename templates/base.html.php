@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/assets/dist/style.min.css">
+    <link rel="stylesheet" href="/assets/dist/<?= isset($_SESSION['theme']) && $_SESSION['theme'] === 'alt' ? 'contrast.min.css' : 'style.min.css' ?>">
     <title><?= $title ?? 'Plusflix' ?></title>
     <style>
         .app-header {
@@ -28,6 +28,8 @@ $selectedPlatforms = $_GET['platform'] ?? [];
 ?>
 <header class="app-header">
     <div class="header-container">
+
+
         <a href="<?= $router->generatePath('') ?>" class="logo"><span class="logo-plus">PLUS</span><span class="logo-flix">FLIX</span></a>
         <form action="/index.php" method="GET" class="search-form">
             <input type="hidden" name="action" value="movie-index">
@@ -52,6 +54,12 @@ $selectedPlatforms = $_GET['platform'] ?? [];
                 <button type="submit">Zastosuj filtry</button>
             </div>
         </form>
+        <div class="toggle-modes">
+            <label>
+                <input  type="checkbox" value="contrast" name="modes">
+                Wysoki Kontrast
+            </label>
+        </div>
         <button class="saved-btn" aria-label="Zapisane filmy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
     </div>
 </header>
@@ -69,6 +77,40 @@ $selectedPlatforms = $_GET['platform'] ?? [];
             return;
         }
         window.location.href = '<?= $router->generatePath('') ?>';
+    });
+
+    // document.querySelectorAll('input[name="modes"]').forEach(checkbox => {
+    //     checkbox.addEventListener('change', (e) => {
+    //         const link = document.querySelector('link[rel="stylesheet"]');
+    //         if(e.target.checked){
+    //             link.href = '/assets/dist/contrast.min.css';
+    //         }
+    //         else{
+    //             link.href = '/assets/dist/style.min.css';
+    //         }
+    //     });
+    // });
+    document.addEventListener('DOMContentLoaded', () => {
+        const link = document.querySelector('link[rel="stylesheet"]');
+        const checkbox = document.querySelector('input[name="modes"]');
+
+        const applyTheme = (isContrast) => {
+            link.href = isContrast ? '/assets/dist/contrast.min.css' : '/assets/dist/style.min.css';
+        };
+
+        const savedState = localStorage.getItem('contrast-enabled') === 'true';
+
+        if (checkbox) {
+            checkbox.checked = savedState;
+            applyTheme(savedState);
+
+            checkbox.addEventListener('change', (e) => {
+                const active = e.target.checked;
+                localStorage.setItem('contrast-enabled', active);
+
+                applyTheme(active);
+            });
+        }
     });
 </script>
 </body>
