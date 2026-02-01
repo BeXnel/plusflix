@@ -134,7 +134,7 @@ class Movie
         return self::findByCriteria();
     }
 
-    public static function findByCriteria(string $q = '', array $genreIds = [], array $platformIds = []): array
+    public static function findByCriteria(string $q = '', array $genreIds = [], array $platformIds = [], int $limit = 10): array
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT DISTINCT m.* FROM movies m';
@@ -143,21 +143,31 @@ class Movie
         $params = [];
         if (!empty($genreIds)) {
             $joins[] = 'JOIN movie_genres mg ON m.id = mg.movie_id';
-            $genrePlaceholders = implode(',', array_fill(0, count($genreIds), '?'));
-            $where[] = "mg.genre_id IN ($genrePlaceholders)";
-            $params = array_merge($params, $genreIds);
+            $genrePlaceholders = [];
+            foreach ($genreIds as $index => $genreId) {
+                $placeholder = ':genreId_' . $index;
+                $genrePlaceholders[] = $placeholder;
+                $params[$placeholder] = $genreId;
+            }
+            $where[] = "mg.genre_id IN (" . implode(',', $genrePlaceholders) . ")";
         }
         if (!empty($platformIds)) {
             $joins[] = 'JOIN availability a ON m.id = a.movie_id';
-            $platformPlaceholders = implode(',', array_fill(0, count($platformIds), '?'));
-            $where[] = "a.platform_id IN ($platformPlaceholders)";
-            $params = array_merge($params, $platformIds);
+            $platformPlaceholders = [];
+            foreach ($platformIds as $index => $platformId) {
+                $placeholder = ':platformId_' . $index;
+                $platformPlaceholders[] = $placeholder;
+                $params[$placeholder] = $platformId;
+            }
+            $where[] = "a.platform_id IN (" . implode(',', $platformPlaceholders) . ")";
         }
         if ($q) {
             $escapedQ = self::escapeLikeSpecialChars($q);
             $like = '%' . $escapedQ . '%';
-            $where[] = '(m.title LIKE ? OR m.director LIKE ? OR m.description LIKE ?)';
-            $params = array_merge($params, [$like, $like, $like]);
+            $where[] = '(m.title LIKE :search_title OR m.director LIKE :search_director OR m.description LIKE :search_description)';
+            $params[':search_title'] = $like;
+            $params[':search_director'] = $like;
+            $params[':search_description'] = $like;
         }
         if (!empty($joins)) {
             $sql .= ' ' . implode(' ', $joins);
@@ -165,6 +175,9 @@ class Movie
         if (!empty($where)) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
+        $sql .= ' ORDER BY m.title ASC';
+        $sql .= ' LIMIT ' . (int)$limit;
+
         $statement = $pdo->prepare($sql);
         $statement->execute($params);
         $moviesArray = $statement->fetchAll(\PDO::FETCH_ASSOC);

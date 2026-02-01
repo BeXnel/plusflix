@@ -14,6 +14,10 @@
         .app-header .saved-btn {
             cursor: default;
         }
+
+        label {
+            color: #eee;
+        }
     </style>
 </head>
 <body <?= isset($bodyClass) ? "class='$bodyClass'" : '' ?>>

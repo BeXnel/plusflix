@@ -88,17 +88,17 @@ ob_start();
 }
 
 .show .movie-rating-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, #6366f1, #818cf8);
-    color: #0f0f23;
-    padding: 0.75rem 1.25rem;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1.25rem;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
-    white-space: nowrap;
+    background: #6366f1;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: background 0.3s ease;
+    margin-top: 1rem;
+    display: inline-block;
 }
 
 .show .add-review-btn {
@@ -235,8 +235,6 @@ ob_start();
     border-radius: 16px;
     padding: 2px;
     background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.3s;
@@ -417,25 +415,25 @@ ob_start();
     .show .movie-title {
         font-size: 1.75rem;
     }
-    
+
     .show .meta-label {
         min-width: 80px;
         font-size: 0.85rem;
     }
-    
+
     .show .meta-value {
         font-size: 1rem;
     }
-    
+
     .show .section-header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .show .navigation-buttons {
         flex-direction: column;
     }
-    
+
     .show .nav-link:hover {
         transform: translateY(-2px);
     }
@@ -455,11 +453,6 @@ ob_start();
                     <div class="movie-title-section">
                         <h1 class="movie-title"><?= htmlspecialchars($movie->getTitle(), ENT_QUOTES, 'UTF-8') ?></h1>
                     </div>
-                    <?php if ($movie->getAverageRating()): ?>
-                        <div class="movie-rating-badge">
-                            ⭐ <?= number_format($movie->getAverageRating(), 1) ?>
-                        </div>
-                    <?php endif; ?>
                 </div>
 
                 <div class="movie-meta-grid">
@@ -479,8 +472,13 @@ ob_start();
             </div>
 
             <div>
+                 <?php if ($movie->getAverageRating()): ?>
+                        <div class="movie-rating-badge">
+                            ⭐ <?= number_format($movie->getAverageRating(), 1) ?>
+                        </div>
+                    <?php endif; ?>
                 <button id="openReviewModal" class="add-review-btn">
-                    Dodaj ocenę
+                    Dodaj recenzję
                 </button>
             </div>
         </div>
@@ -517,8 +515,8 @@ ob_start();
                     default => '#',
                 };
             ?>
-                <a href="<?= $url ?>" 
-                   class="platform-badge <?= htmlspecialchars($clean_name, ENT_QUOTES, 'UTF-8') ?>" 
+                <a href="<?= $url ?>"
+                   class="platform-badge <?= htmlspecialchars($clean_name, ENT_QUOTES, 'UTF-8') ?>"
                    title="<?= htmlspecialchars($platform->getName(), ENT_QUOTES, 'UTF-8') ?>"
                    target="_blank">
                     <span class="platform-logo"><?= htmlspecialchars($display_text, ENT_QUOTES, 'UTF-8') ?></span>
@@ -532,7 +530,7 @@ ob_start();
         <div class="section-header">
             <h3 class="section-title">Recenzje użytkowników</h3>
         </div>
-        
+
         <?php if (count($movie->getReviews()) > 0): ?>
             <div class="reviews-container">
                 <?php foreach ($movie->getReviews() as $review): ?>
@@ -562,7 +560,7 @@ ob_start();
     <div id="reviewModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
         <div style="background:#1a1a2e; border:1px solid #2a2a3e; border-radius:16px; padding:2rem; max-width:500px; width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.5);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-                <h3 style="color:#ffffff; margin:0; font-size:1.5rem;">Wystawić recenzję</h3>
+                <h3 style="color:#ffffff; margin:0; font-size:1.5rem;">Dodaj recenzję</h3>
                 <button id="closeReviewModal" type="button" style="background:none; border:none; color:#a0a0b0; font-size:1.5rem; cursor:pointer;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#a0a0b0';">×</button>
             </div>
 
@@ -586,7 +584,7 @@ ob_start();
             </div>
 
             <div style="margin-bottom:1.5rem;">
-                <label style="display:block; color:#ffffff; font-weight:500; margin-bottom:0.75rem;">Komentarz (opcjonalnie)</label>
+                <label style="display:block; color:#ffffff; font-weight:500; margin-bottom:0.75rem;">Komentarz (opcjonalne)</label>
                 <textarea id="reviewComment" style="width:100%; height:120px; padding:0.75rem; border:1px solid #2a2a3e; border-radius:8px; background:#16162a; color:#ffffff; font-family:'Poppins', sans-serif; font-size:0.95rem; resize:vertical; box-sizing:border-box;" placeholder="Podziel się swoją opinią..."></textarea>
             </div>
 

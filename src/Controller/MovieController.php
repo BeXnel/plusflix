@@ -12,7 +12,14 @@ class MovieController
         $q = $_GET['q'] ?? '';
         $genreIds = array_map('intval', $_GET['genre'] ?? []);
         $platformIds = array_map('intval', $_GET['platform'] ?? []);
-        $movies = Movie::findByCriteria($q, $genreIds, $platformIds);
+        $limit = 10;
+        if (isset($_GET['limit'])) {
+            $candidateLimit = (int) $_GET['limit'];
+            if ($candidateLimit >= 1 && $candidateLimit <= 100) {
+                $limit = $candidateLimit;
+            }
+        }
+        $movies = Movie::findByCriteria($q, $genreIds, $platformIds, $limit);
         $html = $templating->render('movie/index.html.php', [
             'movies' => $movies,
             'router' => $router,
