@@ -6,9 +6,23 @@ $bodyClass = 'index';
 ob_start(); ?>
 <div class="container">
     <h1 class="section-title">Lista filmów</h1>
+
     <div class="actions">
         <a href="<?= $router->generatePath('') ?>">Powrót do strony głównej</a>
     </div>
+    
+    <div class="list-controls" style="display:flex; gap:15px; align-items:center;">
+            <label for="limit-select" style="color:#a0a0b0; font-size:0.9rem;">Wyników na stronę:</label>
+            <select id="limit-select" onchange="changeLimit(this.value)" style="padding: 8px 12px; background:#1b1b2f; color:white; border:1px solid #2a2a3e; border-radius:8px; cursor:pointer;">
+                <?php foreach ([10, 20, 50] as $opt): ?>
+                    <option value="<?= $opt ?>" <?= ($currentLimit == $opt) ? 'selected' : '' ?>>
+                        <?= $opt ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    
     <section class="top-list-section">
         <div class="movies-list">
             <?php if (empty($movies)): ?>
@@ -46,5 +60,12 @@ ob_start(); ?>
         </div>
     </section>
 </div>
+<script>
+function changeLimit(newLimit){
+    const url = new URL(window.location.href);
+    url.searchParams.set('limit', newLimit);
+    window.location.href = url.toString();
+}    
+</script>
 <?php $main = ob_get_clean();
 include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'base.html.php';

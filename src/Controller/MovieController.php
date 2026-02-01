@@ -20,9 +20,11 @@ class MovieController
             }
         }
         $movies = Movie::findByCriteria($q, $genreIds, $platformIds, null, $limit);
+
         $html = $templating->render('movie/index.html.php', [
             'movies' => $movies,
             'router' => $router,
+            'currentLimit' => $limit,
         ]);
         return $html;
     }
