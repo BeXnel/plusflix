@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/assets/dist/<?= isset($_SESSION['theme']) && $_SESSION['theme'] === 'alt' ? 'contrast.min.css' : 'style.min.css' ?>">
+    <?php
+        $theme = $_SESSION['theme'] ?? 'default';
+        $theme = $theme === 'alt' ? 'contrast' : $theme;
+        $themeCss = $theme === 'contrast'
+            ? 'contrast.min.css'
+            : ($theme === 'light' ? 'light.min.css' : 'style.min.css');
+    ?>
+    <link rel="stylesheet" href="/assets/dist/<?= $themeCss ?>">
     <title><?= $title ?? 'Plusflix' ?></title>
     <style>
         .app-header .search-pill,
@@ -55,10 +62,12 @@ $selectedPlatforms = $_GET['platform'] ?? [];
             </div>
         </form>
         <div class="toggle-modes">
-            <label>
-                <input  type="checkbox" value="contrast" name="modes">
-                Wysoki Kontrast
-            </label>
+            <label for="theme-select">Motyw</label>
+            <select id="theme-select" name="theme-select" aria-label="Wybierz motyw">
+                <option value="default">Ciemny</option>
+                <option value="light">Jasny</option>
+                <option value="contrast">Wysoki kontrast</option>
+            </select>
         </div>
         <a class="saved-btn" href="<?= $router->generatePath('movie-favorites') ?>" aria-label="Ulubione filmy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></a>
     </div>
@@ -73,23 +82,36 @@ $selectedPlatforms = $_GET['platform'] ?? [];
 
     document.addEventListener('DOMContentLoaded', () => {
         const link = document.querySelector('link[rel="stylesheet"]');
-        const checkbox = document.querySelector('input[name="modes"]');
+        const themeSelect = document.getElementById('theme-select');
 
-        const applyTheme = (isContrast) => {
-            link.href = isContrast ? '/assets/dist/contrast.min.css' : '/assets/dist/style.min.css';
+        const applyTheme = (theme) => {
+            switch (theme) {
+                case 'contrast':
+                    link.href = '/assets/dist/contrast.min.css';
+                    break;
+                case 'light':
+                    link.href = '/assets/dist/light.min.css';
+                    break;
+                default:
+                    link.href = '/assets/dist/style.min.css';
+            }
         };
 
-        const savedState = localStorage.getItem('contrast-enabled') === 'true';
+        const storedTheme = localStorage.getItem('theme');
+        const legacyContrast = localStorage.getItem('contrast-enabled') === 'true';
+        const initialTheme = storedTheme || (legacyContrast ? 'contrast' : 'default');
 
-        if (checkbox) {
-            checkbox.checked = savedState;
-            applyTheme(savedState);
+        if (themeSelect) {
+            themeSelect.value = initialTheme;
+            applyTheme(initialTheme);
 
-            checkbox.addEventListener('change', (e) => {
-                const active = e.target.checked;
-                localStorage.setItem('contrast-enabled', active);
-
-                applyTheme(active);
+            themeSelect.addEventListener('change', (e) => {
+                const theme = e.target.value;
+                localStorage.setItem('theme', theme);
+                if (theme !== 'contrast') {
+                    localStorage.setItem('contrast-enabled', 'false');
+                }
+                applyTheme(theme);
             });
         }
     });
