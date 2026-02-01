@@ -1,100 +1,100 @@
 .app-header {
-  background: linear-gradient(135deg,#0f0f23 0,#1a1a2e 100%);
-  border-bottom:1px solid #2a2a3e;
-  padding:1.5rem 0;
-  position:sticky;
-  top:0;
-  z-index:100;
-  backdrop-filter:blur(10px);
-  .header-container{
-    max-width:1200px;
-    margin:0 auto;
-    padding:0 1.5rem;
-    display:flex;
-    align-items:center;
-    gap:24px;
-  }
-  .logo{
-    font-size:1.75rem;
-    font-weight:800;
-    letter-spacing:-.5px;
-    .logo-plus{color:#6366f1}
-    .logo-flix{color:#fff}
-  }
-  .search-form{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    position: relative;
-  }
-  .search-pill{
-    display:flex;
-    align-items:center;
-    width:100%;
-    max-width:520px;
-    height:46px;
-    background:#16162a;
-    border:1px solid #2a2a3e;
-    border-radius:12px;
-    padding:0 8px;
-    transition:.3s;
-    &:focus-within{
-      border-color:#6366f1;
-      box-shadow:0 0 0 3px rgba(99,102,241,.25);
+    background: linear-gradient(135deg,#0f0f23 0%,#1a1a2e 100%);
+    border-bottom:1px solid #2a2a3e;
+    padding:1.5rem 0;
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(10px);
+    .header-container{
+        max-width:1200px;
+        margin:0 auto;
+        padding:0 1.5rem;
+        display:flex;
+        align-items:center;
+        gap:24px;
     }
-    .search-input{
-      flex:1;
-      background:transparent;
-      border:none;
-      outline:none;
-      color:#fff;
-      font-size:15px;
-      padding:0 12px;
-      &::placeholder{
-        color:#7c7c9a;
-      }
+    .logo{
+        font-size:1.75rem;
+        font-weight:800;
+        letter-spacing:-.5px;
+        .logo-plus{color:#6366f1}
+        .logo-flix{color:#fff}
     }
-    .icon-btn{
-      width:36px;
-      height:36px;
-      border-radius:10px;
-      border:none;
-      background:transparent;
-      color:#7c7c9a;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      transition:.25s;
-      &:hover{
-        background:#6366f1;
+    .search-form{
+        flex:1;
+        display:flex;
+        justify-content:center;
+        position: relative;
+    }
+    .search-pill{
+        display:flex;
+        align-items:center;
+        width:100%;
+        max-width:520px;
+        height:46px;
+        background:#16162a;
+        border:1px solid #2a2a3e;
+        border-radius:12px;
+        padding:0 8px;
+        transition:.3s;
+        &:focus-within{
+          border-color:#6366f1;
+          box-shadow:0 0 0 3px rgba(99,102,241,.25);
+        }
+        .search-input{
+          flex:1;
+          background:transparent;
+          border:none;
+          outline:none;
+          color:#fff;
+          font-size:15px;
+          padding:0 12px;
+          &::placeholder{
+            color:#7c7c9a;
+          }
+        }
+        .icon-btn{
+          width:36px;
+          height:36px;
+          border-radius:10px;
+          border:none;
+          background:transparent;
+          color:#7c7c9a;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          cursor:pointer;
+          transition:.25s;
+          &:hover{
+            background:#6366f1;
+            color:#fff;
+          }
+          svg{
+            width:18px;
+            height:18px;
+          }
+        }
+    }
+    .saved-btn{
+        background:#16162a;
+        border:1px solid #2a2a3e;
         color:#fff;
-      }
-      svg{
-        width:18px;
-        height:18px;
-      }
+        width:44px;
+        height:44px;
+        border-radius:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        transition:.3s;
+        &:hover{
+          background:#6366f1;
+          border-color:#6366f1;
+          transform:translateY(-2px);
+          box-shadow:0 4px 12px rgba(99,102,241,.3);
+        }
     }
-  }
-  .saved-btn{
-    background:#16162a;
-    border:1px solid #2a2a3e;
-    color:#fff;
-    width:44px;
-    height:44px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:.3s;
-    &:hover{
-      background:#6366f1;
-      border-color:#6366f1;
-      transform:translateY(-2px);
-      box-shadow:0 4px 12px rgba(99,102,241,.3);
-    }
-  }
 }
 .filters {
     display: none;
@@ -103,11 +103,11 @@
     left: 0;
     right: 0;
     background: #16162a;
-    border: 1px solid @border-color;
+    border: 1px solid #2a2a3e;
     border-radius: 12px;
     padding: 16px;
     z-index: 99;
-    color: @text-primary;
+    color: #ffffff;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     &.show {
         display: block;
@@ -115,7 +115,7 @@
     h4 {
         font-size: 1rem;
         margin-bottom: 8px;
-        color: @text-secondary;
+        color: #a0a0b0;
     }
     .filter-group {
         margin-bottom: 16px;
@@ -132,14 +132,14 @@
         appearance: none;
         width: 16px;
         height: 16px;
-        border: 1px solid @border-color;
+        border: 1px solid #2a2a3e;
         border-radius: 4px;
-        background: @card-bg;
+        background: #16162a;
         cursor: pointer;
         position: relative;
         &:checked {
-            background: @primary-color;
-            border-color: @primary-color;
+            background: #6366f1;
+            border-color: #6366f1;
             &:after {
                 content: "✔";
                 position: absolute;
@@ -152,7 +152,7 @@
         }
     }
     button[type="submit"] {
-        background: @primary-color;
+        background: #6366f1;
         color: white;
         border: none;
         border-radius: 8px;
@@ -163,7 +163,36 @@
         width: 100%;
         margin-top: 8px;
         &:hover {
-            background: @primary-hover;
+            background: #4f46e5;
+        }
+    }
+}
+@media (max-width: 768px) {
+    .app-header {
+        padding: 1rem 0;
+        .header-container {
+            padding: 0 1rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .search-pill {
+            max-width: none;
+            height: 40px;
+        }
+        .search-input {
+            font-size: 14px;
+        }
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+        }
+        .saved-btn {
+            width: 40px;
+            height: 40px;
+        }
+        .logo {
+            font-size: 1.5rem;
         }
     }
 }

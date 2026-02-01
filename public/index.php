@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php';
 $config = new \App\Service\Config();
 $templating = new \App\Service\Templating();
@@ -64,13 +65,21 @@ switch ($actionType) {
         if (! $_REQUEST['id']) {
             break;
         }
-        /**
-         * @var \App\Controller\MovieController $controller
-         */
         $controller = getController($actionModel);
         if (method_exists($controller, 'addReviewAction')) {
             $view = $controller->addReviewAction($_REQUEST['id'], $_REQUEST, $templating, $router);
         }
+        break;
+    case 'favorites':
+        $controller = getController($actionModel);
+        $view = $controller->favoritesAction($templating, $router);
+        break;
+    case 'toggleFavorite':
+        if (! $_REQUEST['id']) {
+            break;
+        }
+        $controller = getController($actionModel);
+        $controller->toggleFavoriteAction($_REQUEST['id'], $router);
         break;
     default:
         $controller = new \App\Controller\HomeController();

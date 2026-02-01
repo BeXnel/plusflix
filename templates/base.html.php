@@ -14,6 +14,9 @@
         .app-header .saved-btn {
             cursor: default;
         }
+        label {
+            color: #eee;
+        }
     </style>
 </head>
 <body <?= isset($bodyClass) ? "class='$bodyClass'" : '' ?>>
@@ -65,13 +68,11 @@ $selectedPlatforms = $_GET['platform'] ?? [];
 </header>
 <main><?= $main ?? null ?></main>
 <footer class="app-footer"><p>© <?= date('Y') ?> PLUSFLIX</p></footer>
-
 <script>
     document.getElementById('filter-btn').addEventListener('click', function(e) {
         e.stopPropagation();
         document.getElementById('filters').classList.toggle('show');
     });
-
     document.querySelector('.app-header').addEventListener('click', function(e) {
         if (e.target.closest('.search-pill, .saved-btn, button, input, .icon-btn, #filters')) {
             return;
